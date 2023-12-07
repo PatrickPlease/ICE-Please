@@ -13,20 +13,53 @@ object Market
 object Wardrobe
 object ErrorHandling
 object CreateUserSettings
-object
-
+object NotificationSettings
+object Logout
+object View
+object EmptyByColor
+object Remove
+object SellOrBuy
+object Donate
+object Borrow
+object History
+object Like
+object CreateOutfit
+object GenerateOutfit
+object PreOutfits
+object CategoryOfClothes
+object AddOrRemove
+object AddToLaundry
 
 Main *-- StartMenu
 StartMenu <-- Login
 StartMenu <-- CreateUser
 StartMenu *-- MainMenu
+
 MainMenu *-- Settings
 MainMenu *-- Laundry
 MainMenu *-- Market
 MainMenu *-- Wardrobe
 MainMenu *-- ErrorHandling
 
+Settings <-- CreateUserSettings
+Settings <-- NotificationSettings
+Settings <-- Logout
 
+Laundry <-- View
+Laundry <-- EmptyByColor
+Laundry <-- Remove
 
+Market <-- SellOrBuy
+Market <-- Donate
+Market <-- Borrow
+Market <-- History
+Market <-- Like
+
+Wardrobe <-- CreateOutfit
+Wardrobe <-- GenerateOutfit
+Wardrobe <-- PreOutfits
+Wardrobe <-- CategoryOfClothes
+Wardrobe <-- AddOrRemove
+CategoryOfClothes <-- AddToLaundry
 
 @enduml
