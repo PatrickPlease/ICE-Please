@@ -23,12 +23,11 @@ class CreateUserSettings
 class NotificationSettings
 
 Abstract Clothing
-class Pants
+class Pant
 class Shirt
 class Shoes
 class Socks
-class Underwear
-class Suits
+class underwear
 
 package "util"{
        class TextUI
@@ -44,20 +43,16 @@ MainMenu *-- ErrorHandling
 Wardrobe *-- Category
 
 User *-- DataValidator
-CreateAccount <-- DataValidator
 User *-- CreateAccount
 Settings *-- CreateUserSettings
 Settings *-- NotificationSettings
-Wardrobe *-- Clothing
+Clothing *-- Wardrobe
 Clothing *-- Shoes
 Clothing *-- Shirt
 Clothing *-- Pants
 Clothing *-- Socks
 Clothing *-- Underwear
-Clothing *-- Suits
-
-StartMenu *-- util
-StartMenu *-- User
+Clothing *-- Pan
 
 StartMenu : + login()
 StartMenu : + createUser()
@@ -70,25 +65,26 @@ MainMenu : + ErrorHandling
 
 Clothing : + String color
 Clothing : + String brand
-Clothing : + String clothingType
-Clothing : + String seasons
-Clothing : + String size
-Clothing : + String material
-Clothing : + String info
+Clothing : + String type
+Clothing : + String Seasons
 
-Shoes : + String typeOfShoes
+Shoes : + String type
+Shoes : + float size
 
-Shirt : + String sleevesLength
+Shirt : + String Sleeves length
 Shirt : + String neck
-Shirt : + String typeOfShirt
+Shirt : + String type
 
-Suits : + String typeOfSuit
-
+Pants : + String shorts
+Pants : + String Jeans
+Pants : + String size
 Pants : + boolean pockets
-Pants : + String typeOfPants
 
+Socks : + String size
 Socks : + String type
 
+Underwear : + String size
+Underwear : + String material
 Underwear : + String type
 
 Market : + sellClothing()
@@ -102,7 +98,7 @@ Market : + savedListing()
 
 Wardrobe : + createOutfit()
 Wardrobe : + generateOutfit()
-Wardrobe : + showPrewornOutfits()
+Wardrobe : + showPreWornOutfits()
 Wardrobe : + addOutfitToFavorite()
 Wardrobe : + addClothingToWardrobe()
 Wardrobe : + removeClothingFromWardrobe()
@@ -123,11 +119,11 @@ Main : + static void main(string [] args)
 User : - String username
 User : - String password
 User : - static ArrayList <User> users
-
-
+'---_new-----
 User : + User(String Username, String Password)
+'-----------
 
-
+'---_new-----
 DataValidator : + Boolean isUsernameValid()
 DataValidator : + Boolean isPassWordValid()
 '-----------
@@ -135,18 +131,15 @@ DataValidator : + Boolean isPassWordValid()
 CreateAccount : - Boolean createUser(String name, String Password)
 CreateAccount : - Boolean addUser(new user(name, Password)
 CreateAccount : - Boolean removeUser(new user(name, Password)
-CreateAccount : - String UnderwearWash
-CreateAccount : - String jeansWash
-CreateAccount : - String socksWash
-CreateAccount : - String shirtWash
-CreateAccount : - getInfoFromUser()
+
+
 DbIO : - Scanner scanner
 
 '---_new-----
 DbIO : + Arraylist<User> readUserData(String path)
 DbIO : + void saveUserData(ArrayList<User> users)
 DbIO : + String[] readLoginData(String Username, String password)
-
+DbIO : + String[] readMediaData(String title, int releaseYear, float rating, String genre)
 '-----------
 
 TextUI : + String getInput(String msg)
