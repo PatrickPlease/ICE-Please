@@ -1,0 +1,121 @@
+@startuml
+'Domænemodellen giver nye entity klasser
+'Pakker, model og util
+!pragma layout smetana
+
+class Main
+class User
+class DataValidator
+class CreateAccount
+class WatchList
+interface Media
+class TvShows
+class Movies
+class MediaWindow
+class Category
+class StreamingService
+
+
+package "util"{
+       class TextUI
+       class DbIO
+       }
+
+Main *-- StreamingService
+StreamingService *-- User
+User *-- DataValidator
+User *-- CreateAccount
+User *-- WatchList
+StreamingService *-- Media
+Media <|-- Movies
+Media <|-- TvShows
+StreamingService *-- MediaWindow
+StreamingService *-- util
+StreamingService *-- Category
+
+Main : + static void main(string [] args)
+
+
+StreamingService : + WatchList
+StreamingService : + DbIO io
+StreamingService : + TextUI ui
+StreamingService : + static ArrayList <User> users
+StreamingService : + static ArrayList <Movie> movies
+StreamingService : + static ArrayList <TvShow> TvShows
+'---_new-----
+StreamingService : - login()
+StreamingService : + searchByName()
+StreamingService : + searchByCategory()
+StreamingService : + searchByYear()
+StreamingService : + logOut()
+StreamingService : + void setup()
+StreamingService : + void runStreamingService()
+StreamingService : + moveToWatchList()
+'-----------
+
+User : - String username
+User : - String password
+User : - static ArrayList <User> users
+'---_new-----
+User : + User(String Username, String Password)
+
+'-----------
+
+'---_new-----
+DataValidator : + Boolean isUsernameValid()
+DataValidator : + Boolean isPassWordValid()
+'-----------
+
+CreateAccount : - Boolean createUser(String name, String Password)
+CreateAccount : - Boolean addUser(new user(name, Password)
+CreateAccount : - Boolean removeUser(new user(name, Password)
+
+
+WatchList : + addMedia()
+WatchList : + displayWatched()
+WatchList : + removeMedia()
+
+
+Media : + String getTitle()
+Media : + int getReleaseYear()
+Media : + float getRating()
+Media : + String getGenre()
+Media : + int getTimeWatched()
+'---_new-----
+Media : + Media(String title, int releaseYear, float rating, String genre, boolean MediaType)
+'-----------
+
+TvShows : + String title
+TvShows : + int releaseYear
+TvShows : + float rating
+TvShows : + String genre
+TvShows : + int seasons
+TvShows : + int episodes
+
+Movies : + String title
+Movies : + int releaseYear
+Movies : + float rating
+Movies : + String genre
+
+MediaWindow : + playMedia()
+MediaWindow : + pauseMedia()
+MediaWindow : + rewindMedia()
+MediaWindow : + exitMedia()
+MediaWindow : + chooseSeAndEp()
+
+Category : + chooseGenre()
+Category : + chooseYear()
+
+DbIO : - Scanner scanner
+'---_new-----
+DbIO : + Arraylist<User> readUserData(String path)
+DbIO : + void saveUserData(ArrayList<User> users)
+DbIO : + String[] readLoginData(String Username, String password)
+DbIO : + String[] readMediadata(String title, int releaseYear, float rating, String genre)
+'-----------
+
+TextUI : + String getInput(String msg)
+TextUI : - Scanner scanner
+TextUI : + void displayMessage(String msg)
+
+@enduml

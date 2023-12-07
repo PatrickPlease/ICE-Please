@@ -1,0 +1,32 @@
+@startuml
+'nyt: carddeck - card
+!pragma layout smetana
+
+object Main
+object StartMenu
+object Login
+object CreateUser
+object MainMenu
+object Settings
+object Laundry
+object Market
+object Wardrobe
+object ErrorHandling
+object CreateUserSettings
+object
+
+
+Main *-- StartMenu
+StartMenu <-- Login
+StartMenu <-- CreateUser
+StartMenu *-- MainMenu
+MainMenu *-- Settings
+MainMenu *-- Laundry
+MainMenu *-- Market
+MainMenu *-- Wardrobe
+MainMenu *-- ErrorHandling
+
+
+
+
+@enduml
