@@ -23,6 +23,8 @@ public class CreateAccount {
         User newUser = new User(username, password);
         FileIO.saveUserData(newUser);
 
+        getInfoFromUser();
+
         ui.displayMessage("Account created. Welcome!");
     }
 }

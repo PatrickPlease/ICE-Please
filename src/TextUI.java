@@ -4,12 +4,6 @@ import java.util.Scanner;
 public class TextUI {
     private Scanner scan = new Scanner(System.in);
 
-    private MediaWindow mediaWindow;
-
-    public TextUI() {
-        mediaWindow = new MediaWindow();
-    }
-
     public String getInput(String msg) {
 
         System.out.println(msg);
