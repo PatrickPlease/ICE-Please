@@ -53,14 +53,6 @@ public class TextUI {
         }
     }
 
-    private void displayMenu() {
-        System.out.println("1. Play Media");
-        System.out.println("2. Pause Media");
-        System.out.println("3. Rewind Media");
-        System.out.println("4. Forward Media");
-        System.out.println("5. Episode Overview");
-        System.out.println("6. Exit");
-    }
 
 }
 
