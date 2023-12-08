@@ -4,65 +4,129 @@
 !pragma layout smetana
 
 class Main
+class StartMenu
+class MainMenu
+
+class CreateAccount
 class User
 class DataValidator
-class CreateAccount
-class WatchList
-interface Media
-class TvShows
-class Movies
-class MediaWindow
-class Category
-class StreamingService
 
+Abstract Settings
+
+class Laundry
+class Market
+class Wardrobe
+class ErrorHandling
+class Category
+
+class CreateUserSettings
+class NotificationSettings
+
+Abstract Clothing
+class Pants
+class Shirt
+class Shoes
+class Socks
+class Underwear
 
 package "util"{
        class TextUI
        class DbIO
        }
+Main *-- StartMenu
+StartMenu *-- MainMenu
+MainMenu *-- Settings
+MainMenu *-- Laundry
+MainMenu *-- Market
+MainMenu *-- Wardrobe
+MainMenu *-- ErrorHandling
+Wardrobe *-- Category
 
-Main *-- StreamingService
-StreamingService *-- User
 User *-- DataValidator
 CreateAccount <-- DataValidator
 User *-- CreateAccount
-User *-- WatchList
-StreamingService *-- Media
-Media <|-- Movies
-Media <|-- TvShows
-StreamingService *-- MediaWindow
-StreamingService *-- util
-StreamingService *-- Category
+Settings *-- CreateUserSettings
+Settings *-- NotificationSettings
+Wardrobe *-- Clothing
+Clothing *-- Shoes
+Clothing *-- Shirt
+Clothing *-- Pants
+Clothing *-- Socks
+Clothing *-- Underwear
+
+StartMenu *-- util
+StartMenu *-- User
+
+StartMenu : + login()
+StartMenu : + createUser()
+
+MainMenu : + Wardrobe
+MainMenu : + Laundry
+MainMenu : + Market
+MainMenu : + Settings
+MainMenu : + ErrorHandling
+
+Clothing : + String color
+Clothing : + String brand
+Clothing : + String type
+Clothing : + String Seasons
+
+Shoes : + String type
+Shoes : + float size
+
+Shirt : + String sleeves length
+Shirt : + String neck
+Shirt : + String type
+
+Pants : + String shorts
+Pants : + String jeans
+Pants : + String size
+Pants : + boolean pockets
+
+Socks : + String size
+Socks : + String type
+
+Underwear : + String size
+Underwear : + String material
+Underwear : + String type
+
+Market : + sellClothing()
+Market : + buyClothing()
+Market : + donateClothing()
+Market : + borrowClothing()
+Market : + addToBuyHistory()
+Market : + addToSellHistory()
+Market : + chatWindow()
+Market : + savedListing()
+
+Wardrobe : + createOutfit()
+Wardrobe : + generateOutfit()
+Wardrobe : + showPreWornOutfits()
+Wardrobe : + addOutfitToFavorite()
+Wardrobe : + addClothingToWardrobe()
+Wardrobe : + removeClothingFromWardrobe()
+Wardrobe : + addClothingToLaundry()
+
+Settings : + createUserSettings()
+Settings : + notificationSettings()
+Settings : + logOut()
+Settings : + EULA()
+
+Laundry : + view()
+Laundry : + empty()
+Laundry : + removeFromBasket()
+
 
 Main : + static void main(string [] args)
-
-
-StreamingService : + WatchList
-StreamingService : + DbIO io
-StreamingService : + TextUI ui
-StreamingService : + static ArrayList <User> users
-StreamingService : + static ArrayList <Movie> movies
-StreamingService : + static ArrayList <TvShow> TvShows
-'---_new-----
-StreamingService : - login()
-StreamingService : + searchByName()
-StreamingService : + searchByCategory()
-StreamingService : + searchByYear()
-StreamingService : + logOut()
-StreamingService : + void setup()
-StreamingService : + void runStreamingService()
-StreamingService : + moveToWatchList()
-'-----------
 
 User : - String username
 User : - String password
 User : - static ArrayList <User> users
-'---_new-----
+
+
 User : + User(String Username, String Password)
 
-'-----------
 
-'---_new-----
 DataValidator : + Boolean isUsernameValid()
 DataValidator : + Boolean isPassWordValid()
 '-----------
@@ -72,47 +136,13 @@ CreateAccount : - Boolean addUser(new user(name, Password)
 CreateAccount : - Boolean removeUser(new user(name, Password)
 
 
-WatchList : + addMedia()
-WatchList : + displayWatched()
-WatchList : + removeMedia()
-
-
-Media : + String getTitle()
-Media : + int getReleaseYear()
-Media : + float getRating()
-Media : + String getGenre()
-Media : + int getTimeWatched()
-'---_new-----
-Media : + Media(String title, int releaseYear, float rating, String genre, boolean MediaType)
-'-----------
-
-TvShows : + String title
-TvShows : + int releaseYear
-TvShows : + float rating
-TvShows : + String genre
-TvShows : + int seasons
-TvShows : + int episodes
-
-Movies : + String title
-Movies : + int releaseYear
-Movies : + float rating
-Movies : + String genre
-
-MediaWindow : + playMedia()
-MediaWindow : + pauseMedia()
-MediaWindow : + rewindMedia()
-MediaWindow : + exitMedia()
-MediaWindow : + chooseSeAndEp()
-
-Category : + chooseGenre()
-Category : + chooseYear()
-
 DbIO : - Scanner scanner
+
 '---_new-----
 DbIO : + Arraylist<User> readUserData(String path)
 DbIO : + void saveUserData(ArrayList<User> users)
 DbIO : + String[] readLoginData(String Username, String password)
-DbIO : + String[] readMediadata(String title, int releaseYear, float rating, String genre)
+DbIO : + String[] readMediaData(String title, int releaseYear, float rating, String genre)
 '-----------
 
 TextUI : + String getInput(String msg)
