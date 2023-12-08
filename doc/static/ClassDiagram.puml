@@ -28,6 +28,7 @@ class Shirt
 class Shoes
 class Socks
 class Underwear
+class Suits
 
 package "util"{
        class TextUI
@@ -53,6 +54,7 @@ Clothing *-- Shirt
 Clothing *-- Pants
 Clothing *-- Socks
 Clothing *-- Underwear
+Clothing *-- Suits
 
 StartMenu *-- util
 StartMenu *-- User
@@ -68,26 +70,25 @@ MainMenu : + ErrorHandling
 
 Clothing : + String color
 Clothing : + String brand
-Clothing : + String type
-Clothing : + String Seasons
+Clothing : + String clothingType
+Clothing : + String seasons
+Clothing : + String size
+Clothing : + String material
+Clothing : + String info
 
-Shoes : + String type
-Shoes : + float size
+Shoes : + String typeOfShoes
 
-Shirt : + String sleeves length
+Shirt : + String sleevesLength
 Shirt : + String neck
-Shirt : + String type
+Shirt : + String typeOfShirt
 
-Pants : + String shorts
-Pants : + String jeans
-Pants : + String size
+Suits : + String typeOfSuit
+
 Pants : + boolean pockets
+Pants : + String typeOfPants
 
-Socks : + String size
 Socks : + String type
 
-Underwear : + String size
-Underwear : + String material
 Underwear : + String type
 
 Market : + sellClothing()
@@ -101,7 +102,7 @@ Market : + savedListing()
 
 Wardrobe : + createOutfit()
 Wardrobe : + generateOutfit()
-Wardrobe : + showPreWornOutfits()
+Wardrobe : + showPrewornOutfits()
 Wardrobe : + addOutfitToFavorite()
 Wardrobe : + addClothingToWardrobe()
 Wardrobe : + removeClothingFromWardrobe()
@@ -134,15 +135,18 @@ DataValidator : + Boolean isPassWordValid()
 CreateAccount : - Boolean createUser(String name, String Password)
 CreateAccount : - Boolean addUser(new user(name, Password)
 CreateAccount : - Boolean removeUser(new user(name, Password)
-
-
+CreateAccount : - String UnderwearWash
+CreateAccount : - String jeansWash
+CreateAccount : - String socksWash
+CreateAccount : - String shirtWash
+CreateAccount : - getInfoFromUser()
 DbIO : - Scanner scanner
 
 '---_new-----
 DbIO : + Arraylist<User> readUserData(String path)
 DbIO : + void saveUserData(ArrayList<User> users)
 DbIO : + String[] readLoginData(String Username, String password)
-DbIO : + String[] readMediaData(String title, int releaseYear, float rating, String genre)
+
 '-----------
 
 TextUI : + String getInput(String msg)
