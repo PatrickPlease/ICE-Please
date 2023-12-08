@@ -27,4 +27,19 @@ public class CreateAccount {
 
         ui.displayMessage("Account created. Welcome!");
     }
+
+    public static void getInfoFromUser(){
+        TextUI ui = new TextUI();
+        Scanner scanner = new Scanner(System.in);
+        ui.getInput("How often do you wash your Underwear after using it?");
+        String UnderwearWash = scanner.nextLine();
+        ui.getInput("How often do you wash your Jeans after using it?");
+        String jeansWash= scanner.nextLine();
+        ui.getInput("How often do you wash your socks after using it?");
+        String socksWash= scanner.nextLine();
+        ui.getInput("how often do you wash your shirt after using it?");
+        String shirtWash= scanner.nextLine();
+
+    }
+    MainMenu();
 }
