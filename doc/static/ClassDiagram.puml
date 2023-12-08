@@ -23,11 +23,11 @@ class CreateUserSettings
 class NotificationSettings
 
 Abstract Clothing
-class Pant
+class Pants
 class Shirt
 class Shoes
 class Socks
-class underwear
+class Underwear
 
 package "util"{
        class TextUI
@@ -43,16 +43,19 @@ MainMenu *-- ErrorHandling
 Wardrobe *-- Category
 
 User *-- DataValidator
+CreateAccount <-- DataValidator
 User *-- CreateAccount
 Settings *-- CreateUserSettings
 Settings *-- NotificationSettings
-Clothing *-- Wardrobe
+Wardrobe *-- Clothing
 Clothing *-- Shoes
 Clothing *-- Shirt
 Clothing *-- Pants
 Clothing *-- Socks
 Clothing *-- Underwear
-Clothing *-- Pan
+
+StartMenu *-- util
+StartMenu *-- User
 
 StartMenu : + login()
 StartMenu : + createUser()
@@ -71,12 +74,12 @@ Clothing : + String Seasons
 Shoes : + String type
 Shoes : + float size
 
-Shirt : + String Sleeves length
+Shirt : + String sleeves length
 Shirt : + String neck
 Shirt : + String type
 
 Pants : + String shorts
-Pants : + String Jeans
+Pants : + String jeans
 Pants : + String size
 Pants : + boolean pockets
 
@@ -119,11 +122,11 @@ Main : + static void main(string [] args)
 User : - String username
 User : - String password
 User : - static ArrayList <User> users
-'---_new-----
-User : + User(String Username, String Password)
-'-----------
 
-'---_new-----
+
+User : + User(String Username, String Password)
+
+
 DataValidator : + Boolean isUsernameValid()
 DataValidator : + Boolean isPassWordValid()
 '-----------
