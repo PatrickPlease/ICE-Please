@@ -24,6 +24,7 @@ package "util"{
 Main *-- StreamingService
 StreamingService *-- User
 User *-- DataValidator
+CreateAccount <-- DataValidator
 User *-- CreateAccount
 User *-- WatchList
 StreamingService *-- Media
