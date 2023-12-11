@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
-public class FileIO {
+public class DbIO {
 
     public static User readUserData(String username) {
         try (Scanner scanner = new Scanner(new File("data/UserData/" + username + "_UserData.txt"))) {

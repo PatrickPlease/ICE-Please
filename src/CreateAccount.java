@@ -21,7 +21,7 @@ public class CreateAccount {
         }
 
         User newUser = new User(username, password);
-        FileIO.saveUserData(newUser);
+        DbIO.saveUserData(newUser);
 
         getInfoFromUser();
 

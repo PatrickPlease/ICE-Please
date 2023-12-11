@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://ctrl.dk.mysql:3306/ctrl_dk_iceplease</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="sql11669455@sql11.freesqldatabase.com" uuid="7dfde2de-3e81-47b2-b1dd-65f29b065dd3">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
