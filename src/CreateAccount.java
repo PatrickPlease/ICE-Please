@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class CreateAccount {
     private static TextUI ui = new TextUI();
 
-    public static void createUser() {
+    public static User createUser() {
         Scanner scanner = new Scanner(System.in);
 
         ui.displayMessage("Enter a Username:");
@@ -26,6 +26,8 @@ public class CreateAccount {
         getInfoFromUser();
 
         ui.displayMessage("Account created. Welcome!");
+
+        return newUser;
     }
 
     public static void getInfoFromUser(){
@@ -41,5 +43,6 @@ public class CreateAccount {
         String shirtWash= scanner.nextLine();
 
     }
-    MainMenu();
-}
+
+    //MainMenu();
+    }
