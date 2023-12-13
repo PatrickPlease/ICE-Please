@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class CreateAccount {
     private static TextUI ui = new TextUI();
@@ -16,10 +18,25 @@ public class CreateAccount {
             password = ui.getInput("Password invalid, please try again");
         }
 
-        User newUser = new User(username, password);
-        io.saveUserData(newUser);
+        String email = ui.getInput("Enter your email: ");
+        while (!DataValidator.isEmailValid(email)) {
+            email = ui.getInput("Email invalid, please try again");
+        }
 
+        try {
+            Connection dbConnection = DbIO.getConnection();
 
+            User newUser = new User(username, password, email);
+
+            DbIO.saveUserData(dbConnection, newUser);
+
+            ui.displayMessage("Now we need to know more about you");
+
+            // ... (remaining code)
+
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database: " + e.getMessage());
+        }
 
         getInfoFromUser();
 
