@@ -10,6 +10,7 @@ public class Wardrobe {
     DbIO io = new DbIO();
     private int user_id;
 
+
     public Outfit createOutfit() {
         List<Clothing> outfitItems = new ArrayList<>();
 
@@ -108,6 +109,11 @@ public class Wardrobe {
     public void addClothingToWardrobe(Connection connection) {
         Scanner scanner = new Scanner(System.in);
 
+        if (currentUser == null) {
+            ui.displayMessage("User not logged in. Clothing cannot be added to the wardrobe.");
+            return;
+        }
+
         ui.displayMessage("Choose the type of clothing to add:");
         ui.displayMessage("1. Shirt\n2. Pants\n3. Shoes\n4. Suits");
 
@@ -118,7 +124,7 @@ public class Wardrobe {
 
         switch (choice) {
             case 1:
-                shirt = shirt.createShirt(scanner);
+                shirt = new Shirt(0,"","","Shirt","","","","","","","");
                 newClothing = shirt.createShirt(scanner);
                 break;
             case 2:
@@ -147,5 +153,6 @@ public class Wardrobe {
     public void addClothingToLaundry(){
     }
     public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }
