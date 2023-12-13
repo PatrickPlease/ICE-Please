@@ -67,7 +67,7 @@ public class MainMenu {
                 break;
             default:
                 ui.displayMessage("Invalid choice. Please try again.");
-                menu();
+                settingsMenu();
                 break;
         }
     }
