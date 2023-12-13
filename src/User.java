@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+
+    private static int nextId = 1; // Used to assign unique IDs to users
+    private int id;
     private String username;
     private String password;
     static ArrayList<User> users = new ArrayList<>();
@@ -12,6 +15,14 @@ public class User {
         setUsername(username);
         setPassword(password);
         users.add(this);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    private void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -39,7 +50,6 @@ public class User {
             throw new IllegalArgumentException("password is not valid");
         }
     }
-
     public static ArrayList<User> getUsers() {
         return users;
     }

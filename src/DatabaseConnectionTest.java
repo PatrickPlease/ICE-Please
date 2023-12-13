@@ -15,10 +15,10 @@ public class DatabaseConnectionTest {
             Statement stmt = conn.createStatement();
 
             // Execute a SQL query
-            String query = "SELECT * FROM clothes       ";
+            String query = "SELECT * FROM clothes";
             ResultSet rs = stmt.executeQuery(query);
 
-            // Process the result set
+            // Process the result set   
             while (rs.next()) {
                 // Retrieve data from each row
                 String clothing_id = rs.getString("clothing_id");

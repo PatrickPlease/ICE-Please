@@ -1,4 +1,32 @@
 public abstract class Clothing {
+
+    private static int nextId = 1; // Used to assign unique IDs to clothing items
+    private int id;
+    private String name;
+
+
+    public Clothing(String name /*, other fields... */) {
+        setId(nextId++);
+        setName(name);
+        // Set other fields...
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    private void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private int clothing_id;
     private String color;
     private String brand;
@@ -43,5 +71,6 @@ public abstract class Clothing {
     public int getClothing_id() { return clothing_id;}
 
     public void setClothing_id(int clothingId) {
+        this.clothing_id = clothingId;
     }
 }
