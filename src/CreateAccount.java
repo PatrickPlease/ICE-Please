@@ -43,7 +43,6 @@ public class CreateAccount {
         ui.getInput("how often do you wash your shirt after using it?");
 
         String shirtWash= scanner.nextLine();
-
     }
 
     // MainMenu();
