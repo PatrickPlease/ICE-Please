@@ -1,5 +1,5 @@
 public abstract class Clothing {
-
+    private int clothing_id;
     private String color;
     private String brand;
     private String clothingType;
@@ -8,7 +8,8 @@ public abstract class Clothing {
     private String material;
     private String info;
 
-    public Clothing(String color, String brand, String clothingType, String seasons, String size, String material, String info){
+    public Clothing(int clothing_id, String color, String brand, String clothingType, String seasons, String size, String material, String info){
+        this.clothing_id = clothing_id;
         this.color = color;
         this.brand = brand;
         this.clothingType = clothingType;
@@ -38,5 +39,9 @@ public abstract class Clothing {
     }
     public String getInfo() {
         return info;
+    }
+    public int getClothing_id() { return clothing_id;}
+
+    public void setClothing_id(int clothingId) {
     }
 }
