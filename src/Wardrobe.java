@@ -18,8 +18,7 @@ public class Wardrobe {
             String clothingType = "";
 
             while (true) {
-                ui.displayMessage("1. Choose shirt\n2. Choose pants\n3. Choose shorts\n4. Choose dress\n5. Choose shoes\n6. Choose suit\n7. Finished");
-                int choice = scanner.nextInt();
+                int choice = Integer.parseInt(ui.getInput("1. Choose shirt\n2. Choose pants\n3. Choose shorts\n4. Choose dress\n5. Choose shoes\n6. Choose suit\n7. Finished"));
                 scanner.nextLine();
                 switch (choice) {
                     case 1:
@@ -75,9 +74,7 @@ public class Wardrobe {
             ui.displayMessage("- " + clothing.getColor() + " " + clothing.getClothingType());
         }
 
-        ui.displayMessage("1. Save outfit\n2. Add outfit to favourites\n3. Go to wardrobe");
-        int finalChoice = scanner.nextInt();
-        scanner.nextLine();
+        int finalChoice = Integer.parseInt(ui.getInput("1. Save outfit\n2. Add outfit to favourites\n3. Go to wardrobe"));
 
         switch (finalChoice) {
             case 1:

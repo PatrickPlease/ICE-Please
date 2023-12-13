@@ -9,7 +9,7 @@ public class Main {
         wardrobe.setCurrentUser(loggedInUser);
 
         Connection connection = null;
-        wardrobe.addClothingToWardrobe(connection);
+        wardrobe.createOutfit();
 
     }
 }

@@ -92,6 +92,7 @@ public class DbIO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public static User readUserData(Connection connection, String username) {
