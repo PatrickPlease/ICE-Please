@@ -24,6 +24,8 @@ public class CreateAccount {
         getInfoFromUser();
 
         ui.displayMessage("Account created. Welcome!");
+
+        return newUser;
     }
 
     public static void getInfoFromUser(){
