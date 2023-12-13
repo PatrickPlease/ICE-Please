@@ -87,12 +87,15 @@ public class DbIO {
                         default:
                             throw new IllegalArgumentException("Unsupported clothing type: " + type);
                     }
+                } else {
+                    throw new RuntimeException("No clothing found with ID: " + clothing_id);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle the exception appropriately (log, rethrow, etc.)
+            throw new RuntimeException("Error retrieving clothing", e);
         }
-        return null;
     }
 
     public static User readUserData(Connection connection, String username) {

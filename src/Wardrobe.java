@@ -19,7 +19,6 @@ public class Wardrobe {
 
             while (true) {
                 int choice = Integer.parseInt(ui.getInput("1. Choose shirt\n2. Choose pants\n3. Choose shorts\n4. Choose dress\n5. Choose shoes\n6. Choose suit\n7. Finished"));
-                scanner.nextLine();
                 switch (choice) {
                     case 1:
                         clothingType = "Shirt";
