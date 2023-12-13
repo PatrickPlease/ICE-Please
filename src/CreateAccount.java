@@ -2,26 +2,22 @@ import java.util.Scanner;
 
 public class CreateAccount {
     private static TextUI ui = new TextUI();
+    private static DbIO io = new DbIO();
 
     public static void createUser() {
-        Scanner scanner = new Scanner(System.in);
 
-        ui.displayMessage("Enter a Username:");
-        String username = scanner.nextLine();
+        String username = ui.getInput("Enter your username: ");
         while (!DataValidator.isUsernameValid(username)) {
-            ui.displayMessage("Username invalid, please try again");
-            username = scanner.nextLine();
+            username = ui.getInput("Username invalid, please try again");
         }
 
-        ui.displayMessage("Enter a Password:");
-        String password = scanner.nextLine();
+        String password = ui.getInput("Enter a Password: ");
         while (!DataValidator.isPasswordValid(password)) {
-            ui.displayMessage("Password invalid, please try again");
-            password = scanner.nextLine();
+            password = ui.getInput("Password invalid, please try again");
         }
 
         User newUser = new User(username, password);
-        DbIO.saveUserData(newUser);
+        io.saveUserData(newUser);
 
         getInfoFromUser();
 
@@ -32,14 +28,19 @@ public class CreateAccount {
         TextUI ui = new TextUI();
         Scanner scanner = new Scanner(System.in);
         ui.getInput("How often do you wash your Underwear after using it?");
+
         String UnderwearWash = scanner.nextLine();
         ui.getInput("How often do you wash your Jeans after using it?");
+
         String jeansWash= scanner.nextLine();
         ui.getInput("How often do you wash your socks after using it?");
+
         String socksWash= scanner.nextLine();
         ui.getInput("how often do you wash your shirt after using it?");
+
         String shirtWash= scanner.nextLine();
 
     }
-    MainMenu();
+
+    // MainMenu();
 }
