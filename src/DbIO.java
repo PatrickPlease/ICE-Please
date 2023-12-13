@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.List;
 
 public class DbIO {
-
+    TextUI ui = new TextUI();
     private static final String URL = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
     private static final String USER = "sql11669455";
     private static final String PASSWORD = "dvjB1r36bu";
@@ -10,7 +10,6 @@ public class DbIO {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
-
 
     public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
@@ -39,7 +38,7 @@ public class DbIO {
                     String size = resultSet.getString("size");
                     String info = resultSet.getString("info");
 
-                    System.out.println(id + ". " + color + " " + brand+ " " + material + " " + size + " " + seasons + " " + info);
+                    ui.displayMessage(id + ". " + color + " " + brand+ " " + material + " " + size + " " + seasons + " " + info);
                 }
             }
         } catch (SQLException e) {
@@ -64,10 +63,17 @@ public class DbIO {
 
                     switch (type) {
                         case "Shirt":
-                            return new Shirt(id, color, brand, type, seasons, size, material, info, "", "", "");
+                            String typeOfShirt = resultSet.getString("typeOfShirt");
+                            String sleeveLength = resultSet.getString("sleeveLength");
+                            String neck = resultSet.getString("neck");
+                            return new Shirt(id, color, brand, type, seasons, size, material, info, sleeveLength, neck, typeOfShirt);
                         case "Pants":
                             boolean pockets = resultSet.getBoolean("pockets");
-                            return new Pants(id, color, brand, type, seasons, size, material, info, pockets, "");
+                            String typeOfPants = resultSet.getString("typeOfPants");
+                            return new Pants(id, color, brand, type, seasons, size, material, info, pockets, typeOfPants);
+                        case "Shorts":
+                            String typeOfShorts = resultSet.getString("typeOfShorts");
+                            return new Shorts(id, color, brand, type, seasons, size, material, info, typeOfShorts);
                         case "Shoes":
                             String typeOfShoes = resultSet.getString("typeOfShoes");
                             return new Shoes(id, color, brand, type, seasons, size, material, info, typeOfShoes);
@@ -77,7 +83,6 @@ public class DbIO {
                         case "Suits":
                             String typeOfSuit = resultSet.getString("typeOfSuit");
                             return new Suits(id, color, brand, type, seasons, size, material, info, typeOfSuit);
-                        // Add other clothing types as needed
                         default:
                             throw new IllegalArgumentException("Unsupported clothing type: " + type);
                     }
@@ -113,6 +118,16 @@ public class DbIO {
             } else if (clothing instanceof Shoes) {
                 Shoes shoes = (Shoes) clothing;
                 statement.setString(8, shoes.getTypeOfShoes());
+            } else if (clothing instanceof Shorts){
+                Shorts shorts = (Shorts) clothing;
+                statement.setString(8, shorts.getTypeOfShorts());
+            } else if (clothing instanceof Dress) {
+                Dress dress = (Dress) clothing;
+                statement.setString(8, dress.getDressLength());
+                statement.setString(9, dress.getTypeOfDress());
+            } else if (clothing instanceof Suits){
+                Suits suits = (Suits) clothing;
+                statement.setString(8,suits.getTypeOfSuit());
             }
 
             int affectedRows = statement.executeUpdate();

@@ -18,7 +18,7 @@ public class Wardrobe {
             String clothingType = "";
 
             while (true) {
-                ui.displayMessage("1. Choose shirt\n2. Choose pants\n3. Choose suit\n4. Choose dress\n5. Choose shoes\n6. Done");
+                ui.displayMessage("1. Choose shirt\n2. Choose pants\n3. Choose shorts\n4. Choose dress\n5. Choose shoes\n6. Choose suit\n7. Finished");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
                 switch (choice) {
@@ -29,7 +29,7 @@ public class Wardrobe {
                         clothingType = "Pants";
                         break;
                     case 3:
-                        clothingType = "Suit";
+                        clothingType = "Shorts";
                         break;
                     case 4:
                         clothingType = "Dress";
@@ -38,6 +38,9 @@ public class Wardrobe {
                         clothingType = "Shoes";
                         break;
                     case 6:
+                        clothingType = "Suit";
+                        break;
+                    case 7:
                         creationOptions(scanner, connection, outfitItems);
                         return new Outfit(outfitItems);
                     default:
