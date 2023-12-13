@@ -101,12 +101,13 @@ public class DbIO {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-                if (resultSet.next()) {
-                    String password = resultSet.getString("password");
-                    return new User(resultSet.getString("username"), password);
-                }
-            } catch (SQLException e) {
-                System.out.println("File not found: " + e.getMessage());
+            if (resultSet.next()) {
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+                return new User(resultSet.getString("username"), password, email);
+            }
+        } catch (SQLException e) {
+            System.out.println("File not found: " + e.getMessage());
         }
         return null;
     }
