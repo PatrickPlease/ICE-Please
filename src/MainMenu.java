@@ -1,3 +1,6 @@
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class MainMenu {
     private static User loggedInUser;
     private static TextUI ui = new TextUI();
@@ -21,11 +24,17 @@ public class MainMenu {
         }
     }
 
-    public void login() {
+    public User login() {
         String username = ui.getInput("Enter your username: ");
         String password = ui.getInput("Enter your password: ");
+        Connection connection = null;
+        try {
+            connection = io.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-        loggedInUser = io.readUserData(username);
+        loggedInUser = io.readUserData(connection, username);
 
         if (loggedInUser != null && loggedInUser.getPassword().equals(password)) {
             ui.displayMessage("Login successful. Welcome back, " + loggedInUser.getUsername() + "!");
@@ -33,6 +42,8 @@ public class MainMenu {
             ui.displayMessage("Invalid username or password. Please try again.");
             loggedInUser = null;
             login();
+
         }
+        return loggedInUser;
     }
 }

@@ -4,11 +4,12 @@ public class Main {
 
     public static void main(String[] args) {
         Wardrobe wardrobe = new Wardrobe();
-        User currentUser = CreateAccount.createUser();
-        wardrobe.setCurrentUser(currentUser);
+        MainMenu mm = new MainMenu();
+        User loggedInUser = mm.login();
+        wardrobe.setCurrentUser(loggedInUser);
 
         Connection connection = null;
-        wardrobe.createOutfit();
+        wardrobe.addClothingToWardrobe(connection);
 
     }
 }
