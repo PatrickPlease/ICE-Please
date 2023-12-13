@@ -106,10 +106,10 @@ public class DbIO {
                 }
             } catch (SQLException e) {
                 System.out.println("File not found: " + e.getMessage());
-            }
-            return null;
         }
+        return null;
     }
+
 
     public static void saveUserData(User user) {
 
