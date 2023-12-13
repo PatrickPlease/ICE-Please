@@ -7,6 +7,7 @@ public class DbIO {
     private static final String USER = "sql11669455";
     private static final String PASSWORD = "dvjB1r36bu";
 
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
@@ -93,7 +94,6 @@ public class DbIO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle the exception appropriately (log, rethrow, etc.)
             throw new RuntimeException("Error retrieving clothing", e);
         }
     }
@@ -106,7 +106,8 @@ public class DbIO {
 
             if (resultSet.next()) {
                 String password = resultSet.getString("password");
-                return new User(resultSet.getString("username"), password);
+                String email = resultSet.getString("email");
+                return new User(resultSet.getString("username"), password, email);
             }
         } catch (SQLException e) {
             System.out.println("File not found: " + e.getMessage());
@@ -114,8 +115,19 @@ public class DbIO {
         return null;
     }
 
-    public static void saveUserData(User user) {
+    public static void saveUserData(Connection connection, User user) {
+        String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
+            if (user != null) {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error saving user data to the database: " + e.getMessage());
+        }
     }
 
 

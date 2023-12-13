@@ -4,13 +4,16 @@ import java.util.List;
 public class User {
     private String username;
     private String password;
+    private String email;
+
     static ArrayList<User> users = new ArrayList<>();
     private List<Clothing> clothingItems;
 
 
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
         setUsername(username);
         setPassword(password);
+        this.email = email;
         users.add(this);
     }
 
@@ -38,6 +41,10 @@ public class User {
         else{
             throw new IllegalArgumentException("password is not valid");
         }
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public static ArrayList<User> getUsers() {
