@@ -90,21 +90,22 @@ public class DbIO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-    public static User readUserData(String username) {
-        String query = "SELECT * FROM users WHERE username = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            public static User readUserData (String username){
+                String query = "SELECT * FROM users WHERE username = ?";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setString(1, username);
+                    ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                String password = resultSet.getString("password");
-                return new User(resultSet.getString("username"), password);
+                    if (resultSet.next()) {
+                        String password = resultSet.getString("password");
+                        return new User(resultSet.getString("username"), password);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("File not found: " + e.getMessage());
+                }
+                return null;
             }
-        } catch (SQLException e) {
-            System.out.println("File not found: " + e.getMessage());
         }
-        return null;
-    }
 
     public static void saveUserData(User user) {
         try (PrintWriter pWriter = new PrintWriter(new FileWriter("data/UserData/" + user.getUsername() + "_UserData.txt", true))) {
@@ -116,12 +117,6 @@ public class DbIO {
         }
     }
 
-
-
-
-
-
-}
     public void saveClothingToDatabase(Connection connection, Clothing clothing) {
         String sql = "INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info, sleeveLength, neck) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
