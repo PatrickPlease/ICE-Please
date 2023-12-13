@@ -19,6 +19,8 @@ public class CreateAccount {
         User newUser = new User(username, password);
         io.saveUserData(newUser);
 
+
+
         getInfoFromUser();
 
         ui.displayMessage("Account created. Welcome!");
