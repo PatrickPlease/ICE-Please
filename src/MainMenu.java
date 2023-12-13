@@ -9,7 +9,7 @@ public class MainMenu {
     public void setup() {
 
 
-        int choice = Integer.parseInt(ui.getInput("Welcome to ClothesPlease! \n\nPress 1 to Login \nPress 2 to Create an account\n"));
+        int choice = Integer.parseInt(ui.getInput("\nWelcome to ClothesPlease! \n\nPress 1 to Login \nPress 2 to Create an account\n"));
         switch (choice) {
             case 1:
                 login();
@@ -22,7 +22,57 @@ public class MainMenu {
                 setup();
                 break;
         }
+        menu();
     }
+
+    public void menu() {
+        int choiceMenu = Integer.parseInt(ui.getInput(
+                "Menu: \n1 - Wardrobe\n2 - Laundry\n3 - Market\n4 - Settings"));
+        switch (choiceMenu) {
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+                settingsMenu();
+                break;
+            default:
+                ui.displayMessage("Invalid choice. Please try again.");
+                menu();
+                break;
+        }
+    }
+
+    public void settingsMenu() {
+        ui.displayMessage(loggedInUser.getUsername() + "'s Profile Settings:");
+        int choiceSettingsMenu = Integer.parseInt(ui.getInput(
+                "\n1 - Information\n2 - Notification settings\n3 - Log out\n4 - EULA"));
+        switch (choiceSettingsMenu) {
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            default:
+                ui.displayMessage("Invalid choice. Please try again.");
+                menu();
+                break;
+        }
+    }
+
+
 
     public User login() {
         String username = ui.getInput("Enter your username: ");
