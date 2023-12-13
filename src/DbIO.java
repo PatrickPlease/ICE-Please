@@ -11,6 +11,7 @@ public class DbIO {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
+
     public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -90,14 +91,14 @@ public class DbIO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
+    }
 
-        public static User readUserData (String username){
-            String query = "SELECT * FROM users WHERE username = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, username);
-                ResultSet resultSet = preparedStatement.executeQuery();
+    public static User readUserData(Connection connection, String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
                     String password = resultSet.getString("password");
@@ -111,14 +112,9 @@ public class DbIO {
     }
 
     public static void saveUserData(User user) {
-        try (PrintWriter pWriter = new PrintWriter(new FileWriter("data/UserData/" + user.getUsername() + "_UserData.txt", true))) {
-            if (user != null) {
-                pWriter.println(user.getPassword());
-            }
-        } catch (IOException e) {
-            System.out.println("Something is wrong with the Datafile: " + e.getMessage());
-        }
+
     }
+
 
     public void saveClothingToDatabase(Connection connection, Clothing clothing) {
         String sql = "INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info, sleeveLength, neck) " +

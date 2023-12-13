@@ -76,24 +76,26 @@ public class Laundry {
         return 0; // Default to clean
 
     }
+
+    /*
     public void wearCloth(String item) {
         // Check if the item is in clean clothes
         if (cleanClothes.contains(item)) {
             // Remove from clean clothes and mark as worn
-            cleanClothes.remove(item);
+            //cleanClothes.remove(item);
             dirtyClothes.add(item + " (Worn)");
             System.out.println("The item \"" + item + "\" has been worn and moved to the dirty laundry basket.");
 
             // Update the database after modifying lists
             readDirtyClothesFromDatabase();
-            readCleanClothesFromDatabase();
+            // readCleanClothesFromDatabase();
         } else {
             System.out.println("The item \"" + item + "\" is not in the clean laundry basket.");
 
     public void empty() {
         dirtyClothes.clear();
 
-    }
+    } */
 
     public void closeConnection() {
         try {
