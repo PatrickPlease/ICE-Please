@@ -51,7 +51,7 @@ public class MainMenu {
     public void settingsMenu() {
         ui.displayMessage(loggedInUser.getUsername() + "'s Profile Settings:");
         int choiceSettingsMenu = Integer.parseInt(ui.getInput(
-                "\n1 - Information\n2 - Notification settings\n3 - Log out\n4 - EULA"));
+                "\n1 - Information\n2 - Notification settings\n3 - Log out\n4 - EULA \n\n5 - Back to main page"));
         switch (choiceSettingsMenu) {
             case 1:
 
@@ -60,10 +60,13 @@ public class MainMenu {
 
                 break;
             case 3:
-
+                setup();
                 break;
             case 4:
 
+                break;
+            case 5:
+                menu();
                 break;
             default:
                 ui.displayMessage("Invalid choice. Please try again.");
