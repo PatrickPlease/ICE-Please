@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private String username;
     private String password;
     static ArrayList<User> users = new ArrayList<>();
+    private List<Clothing> clothingItems;
 
 
     public User(String username, String password) {
@@ -41,6 +43,7 @@ public class User {
     public static ArrayList<User> getUsers() {
         return users;
     }
+    public List<Clothing> getClothingItems(){return clothingItems;}
 
     public static void addUser(User user) {
         users.add(user);
