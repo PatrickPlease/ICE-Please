@@ -113,8 +113,19 @@ public class DbIO {
     }
 
 
-    public static void saveUserData(User user) {
+    public static void saveUserData(Connection connection, User user) {
+        String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
+            if (user != null) {
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error saving user data to the database: " + e.getMessage());
+        }
     }
 
 
