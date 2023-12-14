@@ -146,9 +146,11 @@ public class Wardrobe {
             case 4:
                 dress = new Dress(0,"","","Dress", "", "","","","","");
                 newClothing = dress.createDress(scanner);
+                break;
             case 5:
                 shoes = new Shoes(0,"","","Shoes", "", "","","","");
                 newClothing = shoes.createShoes(scanner);
+                break;
             case 6:
                 suits = new Suits(0,"","","Suits", "", "","","","");
                 newClothing = suits.createSuit(scanner);
