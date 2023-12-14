@@ -179,7 +179,7 @@ public class DbIO {
             } else if (clothing instanceof Dress) {
                 sql.append(", dressLength, typeOfPants");
                 values.append(", ?, ?");
-                parameterIndex += 2;
+                parameterIndex += 1;
             } else if (clothing instanceof Suits) {
                 sql.append(", typeOfSuit");
                 values.append(", ?");
