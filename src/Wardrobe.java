@@ -171,11 +171,20 @@ public class Wardrobe {
 
         io.saveClothingToDatabase(connection, newClothing);
     }
-    public void removeClothingFromWardrobe(){
+    public void removeClothingFromWardrobe(Connection connection){
+        try {
+            Scanner scanner = new Scanner(System.in);
+            ui.displayMessage("Enter the ID of the clothing you want to remove from the wardrobe: ");
+            int clothing_id = scanner.nextInt();
+            scanner.nextLine();
+
+            io.removeClothingFromDatabase(connection, clothing_id);
+            ui.displayMessage("Clothing removed from the wardrobe.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
     public void addClothingToLaundry(){
-    }
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
     }
 }
