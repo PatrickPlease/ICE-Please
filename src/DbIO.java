@@ -11,9 +11,20 @@ public class DbIO {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-
     public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (Clothing clothing : outfitItems) {
+                statement.setInt(1, user_id);
+                statement.setInt(2, clothing.getClothing_id());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing> outfitItems) {
+        String sql = "INSERT INTO fave_outfits (user_id, clothing_id) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             for (Clothing clothing : outfitItems) {
                 statement.setInt(1, user_id);
@@ -112,7 +123,6 @@ public class DbIO {
         return null;
     }
 
-
     public static void saveUserData(Connection connection, User user) {
         String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -143,7 +153,6 @@ public class DbIO {
         }
         return -1;  // Return -1 if login fails
     }
-
 
     public void saveClothingToDatabase(Connection connection, Clothing clothing) {
         StringBuilder sql = new StringBuilder("INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info");
