@@ -6,9 +6,19 @@ import java.util.Scanner;
 public class Wardrobe {
     private User currentUser;
     Shirt shirt;
+    Pants pants;
+    Dress dress;
+    Shoes shoes;
+    Suits suits;
+    Shorts shorts;
     TextUI ui = new TextUI();
     DbIO io = new DbIO();
     private int user_id;
+
+    public Wardrobe(int user_id){
+        this.user_id = user_id;
+    }
+
 
     public Outfit createOutfit() {
         List<Clothing> outfitItems = new ArrayList<>();
@@ -104,8 +114,13 @@ public class Wardrobe {
     public void addClothingToWardrobe(Connection connection) {
         Scanner scanner = new Scanner(System.in);
 
+        if (user_id == -1) {
+            ui.displayMessage("User not logged in. Clothing cannot be added to the wardrobe.");
+            return;
+        }
+
         ui.displayMessage("Choose the type of clothing to add:");
-        ui.displayMessage("1. Shirt\n2. Pants\n3. Shoes\n4. Suits");
+        ui.displayMessage("1. Shirt\n2. Pants\n3. Shorts\n3. Dress\n3. Shoes\n4. Suits");
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -114,14 +129,15 @@ public class Wardrobe {
 
         switch (choice) {
             case 1:
-                shirt = shirt.createShirt(scanner);
+                shirt = new Shirt(0,"","","Shirt","","","","","","","");
                 newClothing = shirt.createShirt(scanner);
                 break;
             case 2:
-                //newClothing = pants.createPants(scanner);
+                pants = new Pants(0, "","","Pants","","","","","","");
+                newClothing = pants.createPants(scanner);
                 break;
             case 3:
-               // newClothing = shoes.createShoes(scanner);
+
                 break;
             case 4:
                 //newClothing = suits.createSuits(scanner);
@@ -132,7 +148,9 @@ public class Wardrobe {
                 return;
         }
 
-        currentUser.getClothingItems().add(newClothing);
+        newClothing.setUser_id(user_id);
+
+        //currentUser.getClothingItems().add(newClothing);
 
         ui.displayMessage("Clothing added to wardrobe.");
 
@@ -143,5 +161,6 @@ public class Wardrobe {
     public void addClothingToLaundry(){
     }
     public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }

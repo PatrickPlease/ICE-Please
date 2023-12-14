@@ -5,6 +5,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private int user_id;
 
     static ArrayList<User> users = new ArrayList<>();
     private List<Clothing> clothingItems;
@@ -15,6 +16,12 @@ public class User {
         setPassword(password);
         this.email = email;
         users.add(this);
+    }
+
+    public int getUser_id(){return user_id;
+    }
+    public void setUser_id(int user_id){
+        this.user_id=user_id;
     }
 
     public String getUsername() {

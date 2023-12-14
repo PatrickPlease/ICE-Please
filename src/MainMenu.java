@@ -89,7 +89,9 @@ public class MainMenu {
 
         loggedInUser = io.readUserData(connection, username);
 
-        if (loggedInUser != null && loggedInUser.getPassword().equals(password)) {
+        int user_id = io.getUserId(connection,username,password);
+
+        if (loggedInUser != null && loggedInUser.getPassword().equals(password) && user_id != -1) {
             ui.displayMessage("Login successful. Welcome back, " + loggedInUser.getUsername() + "!");
         } else {
             ui.displayMessage("Invalid username or password. Please try again.");
