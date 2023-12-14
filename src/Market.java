@@ -1,8 +1,13 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Market {
+    TextUI ui = new TextUI();
+    DbIO io = new DbIO();
+    private int user_id;
+    private User currentUser;
     private static List<ClothingListing> listings = new ArrayList<>();
 
     private static final String JDBC_URL = "jdbc:mysql://your_database_host:3306/listings";
@@ -55,12 +60,12 @@ public class Market {
         // Add the listing to the database
         addListingToDatabase(newListing);
 
-        System.out.println("Item listed for sale successfully!");
+        ui.displayMessage("Item listed for sale successfully!");
     }
 
     // Method to add a new listing to the database
     private static void addListingToDatabase(ClothingListing listing) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/marketplace_listings", "sql11669455", "dvjB1r36bu")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/listings", "sql11669455", "dvjB1r36bu")) {
             String sql = "INSERT INTO listings (seller_id, clothing_id, price) VALUES (?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, listing.getSeller().getId());
@@ -76,11 +81,11 @@ public class Market {
 
     // Method to view listings
     public static void viewListings() {
-        System.out.println("Loading listings from database...");
+        ui.displayMessage("Loading listings from database...");
         if (listings.isEmpty()) {
             loadListingsFromDatabase();
         }
-        System.out.println("Available Listings:");
+        ui.displayMessage("Available Listings:");
         for (ClothingListing listing : listings) {
             System.out.println(listing);
         }
@@ -96,9 +101,9 @@ public class Market {
             // Add logic to store the purchase in buy history
             addToBuyHistory(buyer, listing.getClothingItem());
 
-            System.out.println("Item purchased successfully!");
+            ui.displayMessage("Item purchased successfully!");
         } else {
-            System.out.println("Item is not available for purchase.");
+            ui.displayMessage("Item is not available for purchase.");
         }
     }
 
