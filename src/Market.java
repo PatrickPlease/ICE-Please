@@ -9,50 +9,64 @@ public class Market {
     private static int userId;
     private static User currentUser;
     private static List<ClothingListing> listings = new ArrayList<>();
-
-
-/*  det her skal laves om til en switchcase med ui.displaymessage
-
-        loadListingsFromDatabase();
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-        while (running) {
-            System.out.println("Welcome to the Market!");
-            System.out.println("Please select an option:");
-            System.out.println("1. List available clothing items for sale");
-            System.out.println("2. Buy a clothing item");
-            System.out.println("3. Donate a clothing item");
-            System.out.println("4. Borrow a clothing item");
-            System.out.println("5. Exit the Market");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            switch (choice) {
-                case 1:
-                    viewListings();
-                    break;
-                case 2:
-                    buyClothing(scanner);
-                    break;
-                case 3:
-                    donateClothing(scanner);
-                    break;
-                case 4:
-                    borrowClothing(scanner);
-                    break;
-                case 5:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
-            }
-        }
-        scanner.close();
+    private static int displayMenu(Scanner scanner) {
+        System.out.println("Welcome to the Market!");
+        System.out.println("Please select an option:");
+        System.out.println("1. List available clothing items for sale");
+        System.out.println("2. Buy a clothing item");
+        System.out.println("3. Donate a clothing item");
+        System.out.println("4. Borrow a clothing item");
+        System.out.println("5. Exit the Market");
+        return scanner.nextInt();
     }
 
- */
+    private static void listAvailableClothingItems() {
 
-    public static void loadListingsFromDatabase() {
+    }
+
+    private static void buyClothingItem(Scanner scanner) {
+        buyClothing(scanner);
+    }
+
+    private static void donateClothingItem(Scanner scanner) {
+        donateClothing(scanner);
+    }
+
+    private static void borrowClothingItem(Scanner scanner) {
+        borrowClothing(scanner);
+    }
+
+    private static void exitMarket() {
+        System.out.println("Exiting the Market...");
+    }
+
+    private static void handleUserChoice(Scanner scanner) {
+        int choice = displayMenu(scanner);
+        switch (choice) {
+            case 1:
+                listAvailableClothingItems();
+                break;
+            case 2:
+                buyClothingItem(scanner);
+                break;
+            case 3:
+                donateClothingItem(scanner);
+                break;
+            case 4:
+                borrowClothingItem(scanner);
+                break;
+            case 5:
+                exitMarket();
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+                handleUserChoice(scanner);
+                break;
+        }
+    }
+
+
+    private static void loadListingsFromDatabase() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
             String sql = "SELECT * FROM listings";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -73,11 +87,22 @@ public class Market {
         }
     }
 
-    // Method to retrieve a user from the database by ID
     private static User getUserById(int userId) {
-        // Implement logic to retrieve a user from the database based on the ID
-        // ...
-
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
+            String sql = "SELECT * FROM users WHERE user_id =?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, userId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        String name = resultSet.getString("name");
+                        String password = resultSet.getString("password");
+                        return new User(userId, name, password);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -128,13 +153,13 @@ public class Market {
         int listingId = scanner.nextInt();
         scanner.nextLine();
         ClothingListing listing = getListingById(listingId);
-        if (listing != null) {
+        if (listing!= null) {
             System.out.println("Enter your name:");
             String name = scanner.nextLine();
             System.out.println("Enter your password:");
             String password = scanner.nextLine();
             User buyer = getUserByCredentials(name, password);
-            if (buyer != null) {
+            if (buyer!= null) {
                 buyListing(buyer, listing);
             } else {
                 System.out.println("Invalid user credentials. Purchase cancelled.");
@@ -154,9 +179,24 @@ public class Market {
     }
 
     private static User getUserByCredentials(String name, String password) {
-        // få user fra db
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/users", "sql11669455", "dvjB1r36bu")) {
+            String sql = "SELECT * FROM users WHERE username =? AND password =?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, name);
+                statement.setString(2, password);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int userId = resultSet.getInt("id");
+                        return getUserById(userId);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
+
 
     private static void buyListing(User buyer, ClothingListing listing) {
         if (listings.contains(listing)) {
