@@ -10,7 +10,9 @@ public class Market {
     private static User currentUser;
     private static List<ClothingListing> listings = new ArrayList<>();
 
-    public static void main(String[] args) {
+
+/*  det her skal laves om til en switchcase med ui.displaymessage
+
         loadListingsFromDatabase();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -47,6 +49,8 @@ public class Market {
         }
         scanner.close();
     }
+
+ */
 
     public static void loadListingsFromDatabase() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
@@ -88,8 +92,10 @@ public class Market {
     public static void sellClothing(User seller, Clothing clothingItem, double price) {
         ClothingListing newListing = new ClothingListing(seller, clothingItem, price);
         addListingToDatabase(newListing);
+        listings.add(newListing);
         ui.displayMessage("Item listed for sale successfully!");
     }
+
 
     private static void addListingToDatabase(ClothingListing listing) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
