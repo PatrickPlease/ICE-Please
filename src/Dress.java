@@ -1,5 +1,7 @@
-public class Dress extends Clothing {
+import java.util.Scanner;
 
+public class Dress extends Clothing {
+    TextUI ui = new TextUI();
     String typeOfDress;
     String dressLength;
 
@@ -12,8 +14,37 @@ public class Dress extends Clothing {
     public String getTypeOfDress() {
         return typeOfDress;
     }
-
     public String getDressLength() {
         return dressLength;
+    }
+
+    public Dress createDress(Scanner scanner) {
+        ui.displayMessage("Enter dress details:");
+
+        ui.displayMessage("Color:");
+        String color = scanner.nextLine();
+
+        ui.displayMessage("Brand:");
+        String brand = scanner.nextLine();
+
+        ui.displayMessage("Size:");
+        String size = scanner.nextLine();
+
+        ui.displayMessage("Seasons:");
+        String seasons = scanner.nextLine();
+
+        ui.displayMessage("Material:");
+        String material = scanner.nextLine();
+
+        ui.displayMessage("Additional Info:");
+        String info = scanner.nextLine();
+
+        ui.displayMessage("Dress Length:");
+        String dressLength = scanner.nextLine();
+
+        ui.displayMessage("Type of Dress:");
+        String typeOfDress = scanner.nextLine();
+
+        return new Dress(0, color, brand, "Dress", seasons, size, material, info, dressLength, typeOfDress);
     }
 }
