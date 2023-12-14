@@ -48,7 +48,6 @@ public class Market {
         scanner.close();
     }
 
-    // Method to retrieve listings from the database
     public static void loadListingsFromDatabase() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
             String sql = "SELECT * FROM listings";
@@ -86,14 +85,12 @@ public class Market {
         return null;
     }
 
-    // Method to sell clothing and add a new listing to the database
     public static void sellClothing(User seller, Clothing clothingItem, double price) {
         ClothingListing newListing = new ClothingListing(seller, clothingItem, price);
         addListingToDatabase(newListing);
         ui.displayMessage("Item listed for sale successfully!");
     }
 
-    // Method to add a new listing to the database
     private static void addListingToDatabase(ClothingListing listing) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
             String sql = "INSERT INTO listings (seller_id, clothing_id, price) VALUES (?,?,?)";
@@ -109,7 +106,6 @@ public class Market {
         }
     }
 
-    // Method to view listings
     public static void viewListings() {
         ui.displayMessage("Loading listings from database...");
         if (listings.isEmpty()) {
@@ -156,7 +152,6 @@ public class Market {
         return null;
     }
 
-    // Method to buy a listing
     private static void buyListing(User buyer, ClothingListing listing) {
         if (listings.contains(listing)) {
             double price = listing.getPrice();
@@ -169,7 +164,6 @@ public class Market {
         }
     }
 
-    // Method to add to buy history (to be implemented)
     private static void addToBuyHistory(User buyer, Clothing clothingItem) {
         // Implement logic to store the purchase in buy history
         // ...
@@ -187,7 +181,6 @@ public class Market {
             scanner.nextLine();
             User donor = getUserById(userId);
             if (donor != null) {
-                // Add logic to store the donation in the database
                 ui.displayMessage("Item donated successfully!");
             } else {
                 System.out.println("Invalid user ID. Donation cancelled.");
@@ -208,7 +201,6 @@ public class Market {
             scanner.nextLine();
             User borrower = getUserById(userId);
             if (borrower != null) {
-                // Add logic to store the borrowing in the database
                 ui.displayMessage("Item borrowed successfully!");
             } else {
                 System.out.println("Invalid user ID. Borrowing cancelled.");
