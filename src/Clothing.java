@@ -35,6 +35,7 @@ public abstract class Clothing {
     private String size;
     private String material;
     private String info;
+    private int user_id;
 
     public Clothing(int clothing_id, String color, String brand, String clothingType, String seasons, String size, String material, String info){
         this.clothing_id = clothing_id;
@@ -72,5 +73,9 @@ public abstract class Clothing {
 
     public void setClothing_id(int clothingId) {
         this.clothing_id = clothingId;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

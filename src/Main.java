@@ -1,20 +1,28 @@
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Main {
 
     public static void main(String[] args) {
-        //Wardrobe wardrobe = new Wardrobe();
-       // User currentUser = CreateAccount.createUser();
+        DbIO io = new DbIO();
+        MainMenu mainMenu = new MainMenu();
+        User loggedInUser = mainMenu.login();
 
-        //wardrobe.setCurrentUser(currentUser);
+        if(loggedInUser!=null){
+            System.out.println("Userloggedin:"+loggedInUser.getUsername());
 
-
-
-        Market market = new Market();
-        market.viewListings();
-
-       // Connection connection = null;
-        //wardrobe.createOutfit();
+            Wardrobe wardrobe = new Wardrobe(loggedInUser.getUser_id());
+            Connection connection=null;
+            try{
+                connection=io.getConnection();
+            }catch(SQLException e){
+//Handletheexceptionorprintthestacktrace
+                e.printStackTrace();
+            }
+            wardrobe.addClothingToWardrobe(connection);
+        }else{
+            System.out.println("Usernotloggedin.");
+        }
 
     }
 }

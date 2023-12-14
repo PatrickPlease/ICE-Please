@@ -1,4 +1,4 @@
-        @startuml
+@startuml
 'Domænemodellen giver nye entity klasser
 'Pakker, model og util
 !pragma layout smetana

@@ -7,13 +7,17 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private String email;
+    private int user_id;
+
     static ArrayList<User> users = new ArrayList<>();
     private List<Clothing> clothingItems;
 
 
-    public User(String username, String password) {
+    public User(String username, String password, String email) {
         setUsername(username);
         setPassword(password);
+        this.email = email;
         users.add(this);
     }
 
@@ -23,6 +27,12 @@ public class User {
 
     private void setId(int id) {
         this.id = id;
+    }
+
+    public int getUser_id(){return user_id;
+    }
+    public void setUser_id(int user_id){
+        this.user_id=user_id;
     }
 
     public String getUsername() {
@@ -50,6 +60,11 @@ public class User {
             throw new IllegalArgumentException("password is not valid");
         }
     }
+
+    public String getEmail() {
+        return email;
+    }
+
     public static ArrayList<User> getUsers() {
         return users;
     }
