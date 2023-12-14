@@ -23,6 +23,7 @@ public class DbIO {
             e.printStackTrace();
         }
     }
+
     public void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO fave_outfits (user_id, clothing_id) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -50,7 +51,7 @@ public class DbIO {
                     String size = resultSet.getString("size");
                     String info = resultSet.getString("info");
 
-                    ui.displayMessage(id + ". " + color + " " + brand+ " " + material + " " + size + " " + seasons + " " + info);
+                    ui.displayMessage(id + ". " + color + " " + brand + " " + material + " " + size + " " + seasons + " " + info);
                 }
             }
         } catch (SQLException e) {
@@ -108,7 +109,7 @@ public class DbIO {
 
     public static User readUserData(Connection connection, String username) {
         String query = "SELECT * FROM users WHERE username = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -221,7 +222,6 @@ public class DbIO {
                 }
 
                 int affectedRows = statement.executeUpdate();
-
                 if (affectedRows == 0) {
                     throw new SQLException("Inserting clothing failed, no rows affected.");
                 }
@@ -237,6 +237,16 @@ public class DbIO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void removeClothingFromDatabase(Connection connection, int clothing_id) throws SQLException {
+        String sql = "DELETE FROM clothes WHERE clothing_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, clothing_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
     }
 }
