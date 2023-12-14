@@ -4,19 +4,53 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Market {
-    TextUI ui = new TextUI();
-    DbIO io = new DbIO();
-    private int user_id;
-    private User currentUser;
+    private static final TextUI ui = new TextUI();
+    private static final DbIO io = new DbIO();
+    private static int userId;
+    private static User currentUser;
     private static List<ClothingListing> listings = new ArrayList<>();
 
-    private static final String JDBC_URL = "jdbc:mysql://your_database_host:3306/listings";
-    private static final String DB_USER = "sql11669455";
-    private static final String DB_PASSWORD = "dvjB1r36bu";
+    public static void main(String[] args) {
+        loadListingsFromDatabase();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            System.out.println("Welcome to the Market!");
+            System.out.println("Please select an option:");
+            System.out.println("1. List available clothing items for sale");
+            System.out.println("2. Buy a clothing item");
+            System.out.println("3. Donate a clothing item");
+            System.out.println("4. Borrow a clothing item");
+            System.out.println("5. Exit the Market");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            switch (choice) {
+                case 1:
+                    viewListings();
+                    break;
+                case 2:
+                    buyClothing(scanner);
+                    break;
+                case 3:
+                    donateClothing(scanner);
+                    break;
+                case 4:
+                    borrowClothing(scanner);
+                    break;
+                case 5:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+        scanner.close();
+    }
 
     // Method to retrieve listings from the database
     public static void loadListingsFromDatabase() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/listings", "sql11669455", "dvjB1r36bu")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
             String sql = "SELECT * FROM listings";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -54,19 +88,15 @@ public class Market {
 
     // Method to sell clothing and add a new listing to the database
     public static void sellClothing(User seller, Clothing clothingItem, double price) {
-        // Create a new listing with the seller's user ID
         ClothingListing newListing = new ClothingListing(seller, clothingItem, price);
-
-        // Add the listing to the database
         addListingToDatabase(newListing);
-
         ui.displayMessage("Item listed for sale successfully!");
     }
 
     // Method to add a new listing to the database
     private static void addListingToDatabase(ClothingListing listing) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/listings", "sql11669455", "dvjB1r36bu")) {
-            String sql = "INSERT INTO listings (seller_id, clothing_id, price) VALUES (?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
+            String sql = "INSERT INTO listings (seller_id, clothing_id, price) VALUES (?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, listing.getSeller().getId());
                 statement.setInt(2, listing.getClothingItem().getId());
@@ -91,16 +121,48 @@ public class Market {
         }
     }
 
+    public static void buyClothing(Scanner scanner) {
+        System.out.println("Enter the ID of the listing you want to buy:");
+        int listingId = scanner.nextInt();
+        scanner.nextLine();
+        ClothingListing listing = getListingById(listingId);
+        if (listing != null) {
+            System.out.println("Enter your name:");
+            String name = scanner.nextLine();
+            System.out.println("Enter your password:");
+            String password = scanner.nextLine();
+            User buyer = getUserByCredentials(name, password);
+            if (buyer != null) {
+                buyListing(buyer, listing);
+            } else {
+                System.out.println("Invalid user credentials. Purchase cancelled.");
+            }
+        } else {
+            System.out.println("Invalid listing ID. Purchase cancelled.");
+        }
+    }
+
+    private static ClothingListing getListingById(int listingId) {
+        for (ClothingListing listing : listings) {
+            if (listing.getId() == listingId) {
+                return listing;
+            }
+        }
+        return null;
+    }
+
+    private static User getUserByCredentials(String name, String password) {
+        // få user fra db
+        return null;
+    }
+
     // Method to buy a listing
-    public static void buyListing(User buyer, ClothingListing listing) {
+    private static void buyListing(User buyer, ClothingListing listing) {
         if (listings.contains(listing)) {
             double price = listing.getPrice();
-
             listings.remove(listing);
-
             // Add logic to store the purchase in buy history
             addToBuyHistory(buyer, listing.getClothingItem());
-
             ui.displayMessage("Item purchased successfully!");
         } else {
             ui.displayMessage("Item is not available for purchase.");
@@ -114,30 +176,46 @@ public class Market {
     }
 
 
-
-    public static void donateClothing() {
-
+    public static void donateClothing(Scanner scanner) {
+        System.out.println("Enter the ID of the clothing item you want to donate:");
+        int clothingId = scanner.nextInt();
+        scanner.nextLine();
+        Clothing clothingItem = getClothingById(clothingId);
+        if (clothingItem != null) {
+            System.out.println("Enter the ID of the user you want to donate the item to:");
+            int userId = scanner.nextInt();
+            scanner.nextLine();
+            User donor = getUserById(userId);
+            if (donor != null) {
+                // Add logic to store the donation in the database
+                ui.displayMessage("Item donated successfully!");
+            } else {
+                System.out.println("Invalid user ID. Donation cancelled.");
+            }
+        } else {
+            System.out.println("Invalid clothing ID. Donation cancelled.");
+        }
     }
 
-    public static void borrowClothing() {
-
+    public static void borrowClothing(Scanner scanner) {
+        System.out.println("Enter the ID of the clothing item you want to borrow:");
+        int clothingId = scanner.nextInt();
+        scanner.nextLine();
+        Clothing clothingItem = getClothingById(clothingId);
+        if (clothingItem != null) {
+            System.out.println("Enter the ID of the user you want to borrow the item from:");
+            int userId = scanner.nextInt();
+            scanner.nextLine();
+            User borrower = getUserById(userId);
+            if (borrower != null) {
+                // Add logic to store the borrowing in the database
+                ui.displayMessage("Item borrowed successfully!");
+            } else {
+                System.out.println("Invalid user ID. Borrowing cancelled.");
+            }
+        } else {
+            System.out.println("Invalid clothing ID. Borrowing cancelled.");
+        }
     }
-
-    public static void addToBuyHistory() {
-
-    }
-
-    public static void addToSellHistory() {
-
-    }
-
-    public static void chatWindow() {
-
-    }
-
-    public static void savedListing() {
-
-    }
-
 
 }
