@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Market {
+    private static List<ClothingListing> listings = new ArrayList<>();
 
-    private static List<ClothingListing> listings;
-    private static final String JDBC_URL = "jdbc:mysql://your_database_host:3306/marketplace_listings";
+    private static final String JDBC_URL = "jdbc:mysql://your_database_host:3306/listings";
     private static final String DB_USER = "sql11669455";
     private static final String DB_PASSWORD = "dvjB1r36bu";
 
     // Method to retrieve listings from the database
     public static void loadListingsFromDatabase() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/marketplace_listings", "sql11669455", "dvjB1r36bu")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/listings", "sql11669455", "dvjB1r36bu")) {
             String sql = "SELECT * FROM listings";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -76,6 +76,10 @@ public class Market {
 
     // Method to view listings
     public static void viewListings() {
+        System.out.println("Loading listings from database...");
+        if (listings.isEmpty()) {
+            loadListingsFromDatabase();
+        }
         System.out.println("Available Listings:");
         for (ClothingListing listing : listings) {
             System.out.println(listing);
