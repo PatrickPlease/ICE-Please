@@ -20,19 +20,30 @@ public class Market {
         return scanner.nextInt();
     }
 
-    private static void listAvailableClothingItems() {
 
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        handleUserChoice(scanner);
+    }
+
+
+
+    private static void listAvailableClothingItems() {
+        viewListings();
     }
 
     private static void buyClothingItem(Scanner scanner) {
+
         buyClothing(scanner);
     }
 
     private static void donateClothingItem(Scanner scanner) {
+
         donateClothing(scanner);
     }
 
     private static void borrowClothingItem(Scanner scanner) {
+
         borrowClothing(scanner);
     }
 
