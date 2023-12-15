@@ -3,6 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+//Quantum changes POGs
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Market {
     private static final TextUI ui = new TextUI();
     private static final DbIO io = new DbIO();
@@ -14,25 +21,75 @@ public class Market {
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
+
+    //Qcode
+    public static void getConnectionTest() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
+            String user = "sql11669455";
+            String password = "dvjB1r36bu";
+            connection = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT listings.listing_id, listings.price, users.username " +
+                    "FROM listings " +
+                    "INNER JOIN users ON listings.seller_id = users.user_id";
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("listing_id");
+                String seller = resultSet.getString("username");
+                double price = resultSet.getDouble("price");
+                ui.displayMessage("#" + id + "\nSeller: " + seller + "\nPrice: " + price);
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         handleUserChoice(scanner);
     }
 
     private static int displayMenu(Scanner scanner) {
-        System.out.println("Welcome to the Market!");
-        System.out.println("Please select an option:");
-        System.out.println("1. List available clothing items for sale");
-        System.out.println("2. Buy a clothing item");
-        System.out.println("3. Donate a clothing item");
-        System.out.println("4. Borrow a clothing item");
-        System.out.println("5. Exit the Market");
+        ui.displayMessage("Welcome to the Market!");
+        ui.displayMessage("Please select an option:");
+        ui.displayMessage("1. View available clothing items for sale");
+        ui.displayMessage("2. Buy a clothing item");
+        ui.displayMessage("3. Sell an item");
+        ui.displayMessage("4. Borrow a clothing item");
+        ui.displayMessage("5. Donate a clothing item");
+        ui.displayMessage("6. Exit the Market");
         return scanner.nextInt();
     }
 
 
     private static void listAvailableClothingItems() {
-viewListings();
+//viewListings();
+        getConnectionTest();
     }
 
     private static void buyClothingItem(Scanner scanner) {
@@ -51,7 +108,8 @@ viewListings();
     }
 
     private static void exitMarket() {
-        System.out.println("Exiting the Market...");
+
+        ui.displayMessage("Exiting the Market...");
     }
 
     private static void handleUserChoice(Scanner scanner) {
@@ -59,57 +117,50 @@ viewListings();
         switch (choice) {
             case 1:
                 listAvailableClothingItems();
+                ui.displayMessage("\n");
+                handleUserChoice(scanner);
                 break;
             case 2:
                 buyClothingItem(scanner);
+                ui.displayMessage("\n");
+                handleUserChoice(scanner);
                 break;
             case 3:
-                donateClothingItem(scanner);
+                addListingItem(scanner);
+
                 break;
             case 4:
-                borrowClothingItem(scanner);
+                donateClothingItem(scanner);
+                ui.displayMessage("\n");
+                handleUserChoice(scanner);
                 break;
             case 5:
+                borrowClothingItem(scanner);
+                ui.displayMessage("\n");
+                handleUserChoice(scanner);
+
+                break;
+            case 6:
                 exitMarket();
                 break;
+
             default:
-                System.out.println("Invalid choice. Please try again.");
+                ui.displayMessage("Invalid choice. Please try again.");
                 handleUserChoice(scanner);
                 break;
         }
     }
 
-
-    private static void loadListingsFromDatabase() {
-        String sql = "SELECT * FROM listings";
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            listings = new ArrayList<>();
-            while (resultSet.next()) {
-                User seller = getUserById(resultSet.getInt("seller_id"));
-                Clothing clothingItem = getClothingById(resultSet.getInt("clothing_id"));
-                double price = resultSet.getDouble("price");
-
-                ClothingListing listing = new ClothingListing(seller, clothingItem, price);
-                listings.add(listing);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static User getUserById(int user_id) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
-            String sql = "SELECT * FROM sql11669455.listings";
+    private static User getUserById(int userId) {
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            String sql = "SELECT * FROM users WHERE user_id =?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, user_id);
+                statement.setInt(1, userId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        String name = resultSet.getString("name");
+                        String username = resultSet.getString("username");
                         String password = resultSet.getString("password");
-                        return new User("", "", "");
+                        return new User(username, password, "");
                     }
                 }
             }
@@ -119,24 +170,25 @@ viewListings();
         return null;
     }
 
-    // Method to retrieve a clothing item from the database by ID
+
+
     private static Clothing getClothingById(int clothingId) {
         // Implement logic to retrieve a clothing item from the database based on the ID
         // ...
 
         return null;
     }
-
-    public static void sellClothing(User seller, Clothing clothingItem, double price) {
-        ClothingListing newListing = new ClothingListing(seller, clothingItem, price);
-        addListingToDatabase(newListing);
-        listings.add(newListing);
-        ui.displayMessage("Item listed for sale successfully!");
-    }
-
-
     private static void addListingToDatabase(ClothingListing listing) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
+            String user = "sql11669455";
+            String password = "dvjB1r36bu";
+            connection = DriverManager.getConnection(url, user, password);
+
             String sql = "INSERT INTO listings (seller_id, clothing_id, price) VALUES (?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, listing.getSeller().getId());
@@ -149,42 +201,54 @@ viewListings();
             e.printStackTrace();
         }
     }
+    private static void addListingItem(Scanner scanner) {
+        // Collect information about the new listing from the user
+        ui.displayMessage("Enter the clothing item ID:");
+        int clothingItemId = scanner.nextInt();
+        scanner.nextLine(); // consume the newline character
+        ui.displayMessage("Enter the price:");
+        double price = scanner.nextDouble();
+        scanner.nextLine(); // consume the newline character
 
-    public static void viewListings() {
-        ui.displayMessage("Loading listings from database...");
-        if (listings.isEmpty()) {
-            loadListingsFromDatabase();
-        }
-        ui.displayMessage("Available Listings:");
-        for (ClothingListing listing : listings) {
-            System.out.println(listing);
-        }
+        User seller = getUserById(1);
+
+        // Create a new ClothingListing object
+        ClothingListing newListing = new ClothingListing(seller, getClothingById(clothingItemId), price);
+
+        // Add the new listing to the database
+        addListingToDatabase(newListing);
+
+        // Add the new listing to the local listings list
+        listings.add(newListing);
+
+        // Display a success message
+        ui.displayMessage("Item listed successfully!");
     }
 
     public static void buyClothing(Scanner scanner) {
-        System.out.println("Enter the ID of the listing you want to buy:");
-        int listingId = scanner.nextInt();
+        ui.displayMessage("Enter the ID of the listing you want to buy:");
+        int listing_id = scanner.nextInt();
         scanner.nextLine();
-        ClothingListing listing = getListingById(listingId);
+        ClothingListing listing = getListingById(listing_id);
         if (listing!= null) {
-            System.out.println("Enter your name:");
+            ui.displayMessage("Enter your name:");
             String name = scanner.nextLine();
-            System.out.println("Enter your password:");
+            ui.displayMessage("Enter your password:");
             String password = scanner.nextLine();
             User buyer = getUserByCredentials(name, password);
             if (buyer!= null) {
                 buyListing(buyer, listing);
             } else {
-                System.out.println("Invalid user credentials. Purchase cancelled.");
+                ui.displayMessage("Invalid user credentials. Purchase cancelled.");
             }
         } else {
-            System.out.println("Invalid listing ID. Purchase cancelled.");
+            ui.displayMessage("Invalid listing ID. Purchase cancelled.");
         }
     }
 
-    private static ClothingListing getListingById(int listingId) {
+    private static ClothingListing getListingById(int listing_id) {
         for (ClothingListing listing : listings) {
-            if (listing.getId() == listingId) {
+            if (listing.getId() == listing_id) {
                 return listing;
             }
         }
