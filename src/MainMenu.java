@@ -81,7 +81,7 @@ public class MainMenu {
                 "\n1 - Create Outfit\n2 - \n3 - Add Clothing To Wardrobe\n4 - \n\n5 - Back to main page"));
         switch (choiceWardrobe) {
             case 1:
-                Wardrobe.CreateOutfit();
+
                 break;
             case 2:
 

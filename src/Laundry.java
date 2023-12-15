@@ -1,6 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
-
+/*
 public class Laundry {
     private Connection connection;
     private TextUI ui = new TextUI();
@@ -47,7 +47,7 @@ public class Laundry {
         for (String item : dirtyClothes) {
             ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness() + ", Item: " + item);
         }
-    }*/
+    }
 
     private void getColor() {
         try (Statement statement = connection.createStatement();
@@ -90,12 +90,14 @@ public class Laundry {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+}
 
        /* public void empty () {
             dirtyClothes.clear();
         */
 
-        public void closeConnection () {
+        /* public void closeConnection () {
             try {
                 if (connection != null) {
                     connection.close();
@@ -107,3 +109,4 @@ public class Laundry {
         }
     }
 }
+*/

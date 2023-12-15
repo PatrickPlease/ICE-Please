@@ -32,7 +32,7 @@ public class Market {
 
 
     private static void listAvailableClothingItems() {
-
+viewListings();
     }
 
     private static void buyClothingItem(Scanner scanner) {
@@ -102,7 +102,7 @@ public class Market {
 
     private static User getUserById(int user_id) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
-            String sql = "SELECT * FROM users WHERE user_id =?";
+            String sql = "SELECT * FROM sql11669455.listings";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, user_id);
                 try (ResultSet resultSet = statement.executeQuery()) {

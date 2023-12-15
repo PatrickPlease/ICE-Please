@@ -13,6 +13,7 @@ public class ClothingListing {
     }
 
     public User getSeller() {
+
         return seller;
     }
 
@@ -21,11 +22,13 @@ public class ClothingListing {
     }
 
     public double getPrice() {
+
         return price;
     }
 
     // Mark the listing as sold
     public void markAsSold(List<ClothingListing> listings) {
+
         listings.remove(this);
     }
 
@@ -35,10 +38,12 @@ public class ClothingListing {
     }
 
     public int getId() {
+
         return id;
     }
 
     public void setId(int id) {
+
         this.id = id;
     }
 }
