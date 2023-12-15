@@ -6,8 +6,9 @@ public class Main {
     public static void main(String[] args) {
         DbIO io = new DbIO();
         MainMenu mainMenu = new MainMenu();
-        User loggedInUser = mainMenu.login();
 
+        mainMenu.setup();
+/*
         if(loggedInUser!=null){
             System.out.println("Userloggedin:"+loggedInUser.getUsername());
 
@@ -24,5 +25,6 @@ public class Main {
             System.out.println("Usernotloggedin.");
         }
 
+    */
     }
 }
