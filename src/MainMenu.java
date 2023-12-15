@@ -2,7 +2,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class MainMenu {
-    private static User loggedInUser;
+    public static User loggedInUser;
     private static TextUI ui = new TextUI();
     private static DbIO io = new DbIO();
 
@@ -30,7 +30,7 @@ public class MainMenu {
                 "Menu: \n1 - Wardrobe\n2 - Laundry\n3 - Market\n4 - Settings"));
         switch (choiceMenu) {
             case 1:
-
+                Wardrobe();
                 break;
             case 2:
 
@@ -54,7 +54,7 @@ public class MainMenu {
                 "\n1 - Information\n2 - Notification settings\n3 - Log out\n4 - EULA \n\n5 - Back to main page"));
         switch (choiceSettingsMenu) {
             case 1:
-
+                UserManager.changeUserSettings();
                 break;
             case 2:
 
@@ -71,6 +71,33 @@ public class MainMenu {
             default:
                 ui.displayMessage("Invalid choice. Please try again.");
                 settingsMenu();
+                break;
+        }
+    }
+
+    public void Wardrobe(){
+        ui.displayMessage(loggedInUser.getUsername() + "'s Wardrobe:");
+        int choiceWardrobe = Integer.parseInt(ui.getInput(
+                "\n1 - Create Outfit\n2 - \n3 - Add Clothing To Wardrobe\n4 - \n\n5 - Back to main page"));
+        switch (choiceWardrobe) {
+            case 1:
+                Wardrobe.CreateOutfit();
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+                menu();
+                break;
+            default:
+                ui.displayMessage("Invalid choice. Please try again.");
+                Wardrobe();
                 break;
         }
     }

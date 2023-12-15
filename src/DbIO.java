@@ -144,6 +144,28 @@ public class DbIO {
         return -1;  // Return -1 if login fails
     }
 
+    public static void updatePassword(Connection connection, String username, String newPassword) {
+        String query = "UPDATE users SET password = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating password: " + e.getMessage());
+        }
+    }
+
+    public static void updateEmail(Connection connection, String username, String newEmail) {
+        String query = "UPDATE users SET email = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating email: " + e.getMessage());
+        }
+    }
+
 
     public void saveClothingToDatabase(Connection connection, Clothing clothing) {
         StringBuilder sql = new StringBuilder("INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info");
