@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
+
+    private static int nextId = 1; // Used to assign unique IDs to users
+    private int id;
     private String username;
     private String password;
     private String email;
@@ -16,6 +19,14 @@ public class User {
         setPassword(password);
         this.email = email;
         users.add(this);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    private void setId(int id) {
+        this.id = id;
     }
 
     public int getUser_id(){return user_id;

@@ -4,6 +4,7 @@ public class ClothingListing {
     private User seller;
     private Clothing clothingItem;
     private double price;
+    private int id;
 
     public ClothingListing(User seller, Clothing clothingItem, double price) {
         this.seller = seller;
@@ -31,5 +32,13 @@ public class ClothingListing {
     @Override
     public String toString() {
         return String.format("Listing: %s - %s - $%.2f", seller.getUsername(), clothingItem.getClothingType(), price);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
