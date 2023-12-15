@@ -6,16 +6,16 @@ public class MainMenu {
     private static TextUI ui = new TextUI();
     private static DbIO io = new DbIO();
 
-    public void setup() {
+    public User setup() {
 
 
         int choice = Integer.parseInt(ui.getInput("\nWelcome to ClothesPlease! \n\nPress 1 to Login \nPress 2 to Create an account\n"));
         switch (choice) {
             case 1:
-                login();
+                loggedInUser = login();
                 break;
             case 2:
-                CreateAccount.createUser();
+                loggedInUser = CreateAccount.createUser();
                 break;
             default:
                 ui.displayMessage("Invalid choice. Please try again.");
@@ -23,6 +23,7 @@ public class MainMenu {
                 break;
         }
         menu();
+        return loggedInUser;
     }
 
     public void menu() {
@@ -81,7 +82,8 @@ public class MainMenu {
                 "\n1 - Create Outfit\n2 - \n3 - Add Clothing To Wardrobe\n4 - \n\n5 - Back to main page"));
         switch (choiceWardrobe) {
             case 1:
-                Wardrobe.CreateOutfit();
+                loggedInUser.wardrobe.createOutfit();
+               // Wardrobe.createOutfit();
                 break;
             case 2:
 

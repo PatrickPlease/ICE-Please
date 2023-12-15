@@ -6,7 +6,7 @@ public class CreateAccount {
     private static TextUI ui = new TextUI();
     private static DbIO io = new DbIO();
 
-    public static void createUser() {
+    public static User createUser() {
 
         String username = ui.getInput("Enter your username: ");
         while (!DataValidator.isUsernameValid(username)) {
@@ -22,17 +22,17 @@ public class CreateAccount {
         while (!DataValidator.isEmailValid(email)) {
             email = ui.getInput("Email invalid, please try again");
         }
-
+        User newUser = null;
         try {
             Connection dbConnection = DbIO.getConnection();
 
-            User newUser = new User(username, password, email);
+            newUser = new User(username, password, email);
 
             DbIO.saveUserData(dbConnection, newUser);
 
             ui.displayMessage("Now we need to know more about you");
 
-            // ... (remaining code)
+
 
         } catch (SQLException e) {
             System.out.println("Error connecting to the database: " + e.getMessage());
@@ -42,6 +42,7 @@ public class CreateAccount {
 
         ui.displayMessage("Account created. Welcome!");
 
+        return newUser;
     }
 
     public static void getInfoFromUser(){

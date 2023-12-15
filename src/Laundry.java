@@ -47,14 +47,14 @@ public class Laundry {
         for (String item : dirtyClothes) {
             ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness() + ", Item: " + item);
         }
-    }*/
+    }
 
     private void getColor() {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE LOWER (color) != 'White'")) {
 
             while (resultSet.next()) {
-                String color=resultSet.getString("color"));
+                String color=resultSet.getString("color");
                 ui.displayMessage("Here are you color cloth: "+color);
             }
 
@@ -95,15 +95,15 @@ public class Laundry {
             dirtyClothes.clear();
         */
 
-        public void closeConnection () {
-            try {
-                if (connection != null) {
-                    connection.close();
-                    System.out.println("Connection closed");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+public void closeConnection () {
+        try {
+        if (connection != null) {
+        connection.close();
+        System.out.println("Connection closed");
         }
-    }
-}
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
+        }
+        }
+        }*/

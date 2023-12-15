@@ -6,12 +6,14 @@ public class User {
     private String password;
     private String email;
     private int user_id;
+    public Wardrobe wardrobe;
 
     static ArrayList<User> users = new ArrayList<>();
     private List<Clothing> clothingItems;
 
 
     public User(String username, String password, String email) {
+        this.wardrobe = new Wardrobe();
         setUsername(username);
         setPassword(password);
         this.email = email;

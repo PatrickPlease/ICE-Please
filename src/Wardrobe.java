@@ -18,7 +18,9 @@ public class Wardrobe {
     public Wardrobe(int user_id){
         this.user_id = user_id;
     }
+    public Wardrobe(){
 
+    }
 
     public Outfit createOutfit() {
         List<Clothing> outfitItems = new ArrayList<>();
