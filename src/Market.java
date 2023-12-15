@@ -6,9 +6,19 @@ import java.util.Scanner;
 public class Market {
     private static final TextUI ui = new TextUI();
     private static final DbIO io = new DbIO();
-    private static int userId;
-    private static User currentUser;
+    private static final String URL = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
+    private static final String USER = "sql11669455";
+    private static final String PASSWORD = "dvjB1r36bu";
     private static List<ClothingListing> listings = new ArrayList<>();
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        handleUserChoice(scanner);
+    }
+
     private static int displayMenu(Scanner scanner) {
         System.out.println("Welcome to the Market!");
         System.out.println("Please select an option:");
@@ -21,15 +31,8 @@ public class Market {
     }
 
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        handleUserChoice(scanner);
-    }
-
-
-
     private static void listAvailableClothingItems() {
-        viewListings();
+
     }
 
     private static void buyClothingItem(Scanner scanner) {
@@ -78,20 +81,19 @@ public class Market {
 
 
     private static void loadListingsFromDatabase() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
-            String sql = "SELECT * FROM listings";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    listings = new ArrayList<>();
-                    while (resultSet.next()) {
-                        User seller = getUserById(resultSet.getInt("seller_id"));
-                        Clothing clothingItem = getClothingById(resultSet.getInt("clothing_id"));
-                        double price = resultSet.getDouble("price");
+        String sql = "SELECT * FROM listings";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
 
-                        ClothingListing listing = new ClothingListing(seller, clothingItem, price);
-                        listings.add(listing);
-                    }
-                }
+            listings = new ArrayList<>();
+            while (resultSet.next()) {
+                User seller = getUserById(resultSet.getInt("seller_id"));
+                Clothing clothingItem = getClothingById(resultSet.getInt("clothing_id"));
+                double price = resultSet.getDouble("price");
+
+                ClothingListing listing = new ClothingListing(seller, clothingItem, price);
+                listings.add(listing);
             }
         } catch (SQLException e) {
             e.printStackTrace();
