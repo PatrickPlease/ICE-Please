@@ -87,16 +87,16 @@ public class Market {
         }
     }
 
-    private static User getUserById(int userId) {
+    private static User getUserById(int user_id) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://your_database_host:3306/sql11669455", "sql11669455", "dvjB1r36bu")) {
             String sql = "SELECT * FROM users WHERE user_id =?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, userId);
+                statement.setInt(1, user_id);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         String name = resultSet.getString("name");
                         String password = resultSet.getString("password");
-                        return new User(userId, name, password);
+                        return new User("", "", "");
                     }
                 }
             }
