@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class Laundry {
     private Connection connection;
-    private ArrayList<String> dirtyClothes;
     private TextUI ui = new TextUI();
 
     String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
@@ -15,7 +14,6 @@ public class Laundry {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("Connected to the database");
-            dirtyClothes = new ArrayList<>();
             readDirtyClothesFromDatabase();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
