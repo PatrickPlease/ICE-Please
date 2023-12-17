@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Wardrobe {
-    private User currentUser;
     Shirt shirt;
     Pants pants;
     Dress dress;
@@ -171,9 +170,14 @@ public class Wardrobe {
 
         io.saveClothingToDatabase(connection, newClothing);
     }
+
     public void removeClothingFromWardrobe(Connection connection){
         try {
             Scanner scanner = new Scanner(System.in);
+
+            ui.displayMessage("List of clothing in the wardrobe:");
+            io.showAllClothes(connection);
+
             ui.displayMessage("Enter the ID of the clothing you want to remove from the wardrobe: ");
             int clothing_id = scanner.nextInt();
             scanner.nextLine();
@@ -186,5 +190,6 @@ public class Wardrobe {
 
     }
     public void addClothingToLaundry(){
+
     }
 }
