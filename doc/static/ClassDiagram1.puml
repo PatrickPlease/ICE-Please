@@ -68,6 +68,8 @@ MainMenu : + Market
 MainMenu : + Settings
 MainMenu : + ErrorHandling
 
+Clothing : + int clothing_id
+Clothing : + int user_id
 Clothing : + String color
 Clothing : + String brand
 Clothing : + String clothingType
@@ -75,6 +77,13 @@ Clothing : + String seasons
 Clothing : + String size
 Clothing : + String material
 Clothing : + String info
+Clothing : - Clothing
+
+ClothingListing : + Private User seller
+ClothingListing : + Private Clothing clothingItem
+ClothingListing : + Private double price
+ClothingListing : - ClothingListing
+ClothingListing : + markAsSold(List<ClothingListing>listings)
 
 Shoes : + String typeOfShoes
 
@@ -130,23 +139,33 @@ User : + User(String Username, String Password)
 
 DataValidator : + Boolean isUsernameValid()
 DataValidator : + Boolean isPassWordValid()
+DataValidator : + Boolean isEmailValid()
 '-----------
 
-CreateAccount : - Boolean createUser(String name, String Password)
-CreateAccount : - Boolean addUser(new user(name, Password)
-CreateAccount : - Boolean removeUser(new user(name, Password)
-CreateAccount : - String UnderwearWash
-CreateAccount : - String jeansWash
-CreateAccount : - String socksWash
-CreateAccount : - String shirtWash
-CreateAccount : - getInfoFromUser()
-DbIO : - Scanner scanner
+CreateAccount : + TextUI
+CreateAccount : + DBIO
+CreateAccount : - void createUser(String name, String Password)
+
 
 '---_new-----
+DbIO : + DbIO
+DbIO : + TextUI
+DbIO : + String url
+DbIO : + String user
+DbIO : + String password
 DbIO : + Arraylist<User> readUserData(String path)
 DbIO : + void saveUserData(ArrayList<User> users)
 DbIO : + String[] readLoginData(String Username, String password)
-
+DbIO : + Connection getConnection()
+DbIO : + void saveOutfit(Connection connection, int user_id, List<Clothing>outfitItems)
+DbIO : + void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing>outfitItems)
+DbIO : + void showClothes(Connection connection, String clothingType)
+DbIO : + Clothing getClothingById(Connection connection, int clothing_id)
+DbIO : + static User readUserData(Connection connection, String username)
+DbIO : + static void saveUserData(Connection connection, User user)
+DbIO : + static int getUserId(Connection connection, String username, String password)
+DbIO : + void saveClothingToDatabase(Connection connection, Clothing clothing)
+DbIO : + void removeClothingFromDatabase(Connection connection,
 '-----------
 
 TextUI : + String getInput(String msg)

@@ -26,13 +26,15 @@ public class Laundry {
 
             while (resultSet.next()) {
                 String dirty = resultSet.getString("dirty");
-                ui.displayMessage("Here are your dirty cloth"+resultSet);
+                ui.displayMessage("Here are your dirty cloth" + resultSet);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+}
+
 
    /* public void viewAllClothes() {x
         System.out.println("Dirty Clothes:");
@@ -94,7 +96,7 @@ public class Laundry {
        /* public void empty () {
             dirtyClothes.clear();
         */
-
+/*
 public void closeConnection () {
         try {
         if (connection != null) {
@@ -106,4 +108,5 @@ public void closeConnection () {
         }
         }
         }
-        }*/
+        }
+        */
