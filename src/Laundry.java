@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class Laundry {
     private Connection connection;
-    private ArrayList<String> dirtyClothes;
-    TextUI ui = new TextUI();
+    private TextUI ui = new TextUI();
+
     String url = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
     String username = "sql11669455";
     String password = "dvjB1r36bu";
@@ -14,7 +14,6 @@ public class Laundry {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             System.out.println("Connected to the database");
-            dirtyClothes = new ArrayList<>();
             readDirtyClothesFromDatabase();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -23,88 +22,88 @@ public class Laundry {
 
     private void readDirtyClothesFromDatabase() {
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE clothing is not null")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE dirty is true")) {
 
             while (resultSet.next()) {
-                dirtyClothes.add(resultSet.getString("item"));
+                String dirty = resultSet.getString("dirty");
+                ui.displayMessage("Here are your dirty cloth"+resultSet);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
     }
 
-    /*public void removeColoredClothes(String color, int cleanliness) {
-        Iterator<String> iterator = Clothing.iterator();
-        while (iterator.hasNext()) {
-            String item = iterator.next();
-            if (getColor(item).equalsIgnoreCase(color) && getCleanliness(item) == cleanliness) {
-                dirtyClothes.add(item);
-                iterator.remove();
-                ui.displayMessage("All " + color + " clothes with cleanliness " + cleanliness +
-                        " moved to the dirty laundry basket.");
-                        */
-
-
-
-
-    public void viewAllClothes() {
-        ui.displayMessage("Dirty Clothes:");
+   /* public void viewAllClothes() {x
+        System.out.println("Dirty Clothes:");
         for (String item : dirtyClothes) {
-            ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness(item) + ", Item: " + item);
+            ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness() + ", Item: " + item);
         }
-
     }
 
     public void viewClothesInBasket() {
-        ui.displayMessage("Clothes in the Laundry Basket:");
-        ui.displayMessage("Dirty Clothes:");
+        System.out.println("Clothes in the Laundry Basket:");
+        System.out.println("Dirty Clothes:");
         for (String item : dirtyClothes) {
-            ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness(item) + ", Item: " + item);
+            ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness() + ", Item: " + item);
         }
-
     }
 
-    private String getColor(String item) {
-        // Extract color logic
-        return "Unknown";
-    }
+    private void getColor() {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE LOWER (color) != 'White'")) {
 
-    private int getCleanliness(String item) {
-        // Extract cleanliness logic
-        return 0; // Default to clean
-
-    }
-
-    /*
-    public void wearCloth(String item) {
-        // Check if the item is in clean clothes
-        if (cleanClothes.contains(item)) {
-            // Remove from clean clothes and mark as worn
-            //cleanClothes.remove(item);
-            dirtyClothes.add(item + " (Worn)");
-            System.out.println("The item \"" + item + "\" has been worn and moved to the dirty laundry basket.");
-
-            // Update the database after modifying lists
-            readDirtyClothesFromDatabase();
-            // readCleanClothesFromDatabase();
-        } else {
-            System.out.println("The item \"" + item + "\" is not in the clean laundry basket.");
-
-    public void empty() {
-        dirtyClothes.clear();
-
-    } */
-
-    public void closeConnection() {
-        try {
-            if (connection != null) {
-                connection.close();
-                System.out.println("Connection closed");
+            while (resultSet.next()) {
+                String color=resultSet.getString("color");
+                ui.displayMessage("Here are you color cloth: "+color);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-}
+    private void getWhiteCloth() {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE LOWER(color) = 'white'")) {
+
+            while (resultSet.next()) {
+                String item = resultSet.getString("item");
+                ui.displayMessage("White Cloth: " + item);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private int getCleanliness() {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM clothes WHERE dirty is false")) {
+
+            while (resultSet.next()) {
+                String dirty = resultSet.getString("dirty");
+                ui.displayMessage("here is your Clean cloth: " + resultSet);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+       /* public void empty () {
+            dirtyClothes.clear();
+        */
+
+public void closeConnection () {
+        try {
+        if (connection != null) {
+        connection.close();
+        System.out.println("Connection closed");
+        }
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
+        }
+        }
+        }*/

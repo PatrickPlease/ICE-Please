@@ -1,5 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DbIO {
@@ -8,10 +7,10 @@ public class DbIO {
     private static final String USER = "sql11669455";
     private static final String PASSWORD = "dvjB1r36bu";
 
-
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
+
 
     public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
@@ -166,7 +165,7 @@ public class DbIO {
 
     public static User readUserData(Connection connection, String username) {
         String query = "SELECT * FROM users WHERE username = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -180,6 +179,7 @@ public class DbIO {
         }
         return null;
     }
+
 
     public static void saveUserData(Connection connection, User user) {
         String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
@@ -212,6 +212,29 @@ public class DbIO {
         return -1;  // Return -1 if login fails
     }
 
+    public static void updatePassword(Connection connection, String username, String newPassword) {
+        String query = "UPDATE users SET password = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating password: " + e.getMessage());
+        }
+    }
+
+    public static void updateEmail(Connection connection, String username, String newEmail) {
+        String query = "UPDATE users SET email = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating email: " + e.getMessage());
+        }
+    }
+
+
     public void saveClothingToDatabase(Connection connection, Clothing clothing) {
         StringBuilder sql = new StringBuilder("INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info");
         StringBuilder values = new StringBuilder("VALUES (?, ?, ?, ?, ?, ?, ?");
@@ -237,7 +260,7 @@ public class DbIO {
             } else if (clothing instanceof Dress) {
                 sql.append(", dressLength, typeOfPants");
                 values.append(", ?, ?");
-                parameterIndex += 1;
+                parameterIndex += 2;
             } else if (clothing instanceof Suits) {
                 sql.append(", typeOfSuit");
                 values.append(", ?");
@@ -279,6 +302,7 @@ public class DbIO {
                 }
 
                 int affectedRows = statement.executeUpdate();
+
                 if (affectedRows == 0) {
                     throw new SQLException("Inserting clothing failed, no rows affected.");
                 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Wardrobe {
+    private User currentUser;
     Shirt shirt;
     Pants pants;
     Dress dress;
@@ -16,6 +17,9 @@ public class Wardrobe {
 
     public Wardrobe(int user_id){
         this.user_id = user_id;
+    }
+    public Wardrobe(){
+
     }
 
     public Outfit createOutfit() {
@@ -165,6 +169,8 @@ public class Wardrobe {
         }
 
         newClothing.setUser_id(user_id);
+
+        //currentUser.getClothingItems().add(newClothing);
 
         ui.displayMessage("Clothing added to wardrobe.");
 
