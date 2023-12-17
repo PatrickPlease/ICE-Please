@@ -3,8 +3,6 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class UserManager {
-
-    public static User loggedInUser;
     private static TextUI ui = new TextUI();
     private static DbIO io = new DbIO();
 
@@ -12,17 +10,17 @@ public class UserManager {
     public static void changeUserSettings() {
         try (Connection connection = io.getConnection()) {
 
-            ui.displayMessage("Select the setting to change:");
-            ui.displayMessage("1. Change Password");
-            ui.displayMessage("2. Change Email");
+            ui.displayMessage("Select the setting to change:\n");
+            ui.displayMessage("1 - Change Password");
+            ui.displayMessage("2 - Change Email\n");
 
             int choice = Integer.parseInt(ui.getInput("Enter your choice: "));
             switch (choice) {
                 case 1:
-                    updatePasswordWithConfirmation(connection, loggedInUser.getUsername());
+                    updatePasswordWithConfirmation(connection, MainMenu.loggedInUser.getUsername());
                     break;
                 case 2:
-                    updateEmailWithConfirmation(connection, loggedInUser.getUsername());
+                    updateEmailWithConfirmation(connection, MainMenu.loggedInUser.getUsername());
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -37,7 +35,7 @@ public class UserManager {
         String newPassword = ui.getInput("Enter your new password: ");
         if (confirmUpdate("Are you sure you want to change your password?")) {
             DbIO.updatePassword(connection, loggedInUsername, newPassword);
-            ui.displayMessage("Password changed successfully.");
+            ui.displayMessage("Password changed successfully, closing program");
         } else {
             ui.displayMessage("Password change canceled.");
         }
@@ -47,7 +45,7 @@ public class UserManager {
         String newEmail = ui.getInput("Enter your new email: ");
         if (confirmUpdate("Are you sure you want to change your email?")) {
             DbIO.updateEmail(connection, loggedInUsername, newEmail);
-            ui.displayMessage("Email changed successfully.");
+            ui.displayMessage("Email changed successfully, closing program");
         } else {
             ui.displayMessage("Email change canceled.");
         }

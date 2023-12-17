@@ -52,7 +52,7 @@ public class MainMenu {
     public void settingsMenu() {
         ui.displayMessage(loggedInUser.getUsername() + "'s Profile Settings:");
         int choiceSettingsMenu = Integer.parseInt(ui.getInput(
-                "\n1 - Information\n2 - Notification settings\n3 - Log out\n4 - EULA \n\n5 - Back to main page"));
+                "\n1 - Change Password or Email\n2 - Notification settings\n3 - Log out\n4 - EULA \n\n5 - Back to main page"));
         switch (choiceSettingsMenu) {
             case 1:
                 UserManager.changeUserSettings();
