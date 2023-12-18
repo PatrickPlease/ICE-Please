@@ -17,7 +17,7 @@ public class User {
 
 
     public User(String username, String password, String email) {
-        this.wardrobe = new Wardrobe();
+        this.wardrobe = new Wardrobe(getUser_id());
         setUsername(username);
         setPassword(password);
         this.email = email;
