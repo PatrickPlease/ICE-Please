@@ -7,6 +7,8 @@ public class User {
     private String email;
     private int user_id;
     public Wardrobe wardrobe;
+    private int underwearUsage;
+    private int totalUnderwear;
 
     static ArrayList<User> users = new ArrayList<>();
     private List<Clothing> clothingItems;
@@ -67,5 +69,13 @@ public class User {
 
     public String toString() {
         return username + "," + password;
+    }
+
+    public void setUnderwearUsage(int underwearUsage) {
+        this.underwearUsage = underwearUsage;
+    }
+
+    public void setTotalUnderwear(int totalUnderwear) {
+        this.totalUnderwear = totalUnderwear;
     }
 }
