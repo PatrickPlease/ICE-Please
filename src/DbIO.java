@@ -11,7 +11,6 @@ public class DbIO {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-
     public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
         String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

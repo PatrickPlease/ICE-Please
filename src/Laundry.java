@@ -36,7 +36,7 @@ public class Laundry {
 }
 
 
-   /* public void viewAllClothes() {x
+    public void viewAllClothes() {x
         System.out.println("Dirty Clothes:");
         for (String item : dirtyClothes) {
             ui.displayMessage("Color: " + getColor(item) + ", Cleanliness: " + getCleanliness() + ", Item: " + item);
@@ -96,7 +96,7 @@ public class Laundry {
        /* public void empty () {
             dirtyClothes.clear();
         */
-/*
+
 public void closeConnection () {
         try {
         if (connection != null) {
@@ -109,4 +109,4 @@ public void closeConnection () {
         }
         }
         }
-        */
+
