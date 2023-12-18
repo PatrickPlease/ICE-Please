@@ -36,7 +36,7 @@ public class MainMenu {
 
                 break;
             case 3:
-
+                MarketPlace marketPlace = new MarketPlace(this);
                 break;
             case 4:
                 settingsMenu();

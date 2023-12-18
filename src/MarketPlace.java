@@ -9,13 +9,25 @@ public class MarketPlace {
     private static final String USER = "sql11669455";
     private static final String PASSWORD = "dvjB1r36bu";
     private List<ClothingListing> listings = new ArrayList<>();
+    private static boolean testing = false;
 
-    public MarketPlace() {
+
+    private MainMenu menu;
+
+
+    public MarketPlace(MainMenu menu) {
+        if(testing && UserManager.loggedInUser == null) {
+            User user = new User("TestUser", "TestPassword","test@email.com");
+            user.setUser_id(5);
+            UserManager.loggedInUser = user;
+        }
+        this.menu = menu;
         handleUserChoice();
     }
 
     public static void main(String[] args) {
-        MarketPlace mp = new MarketPlace();
+        testing = true;
+        MarketPlace mp = new MarketPlace(new MainMenu());
     }
 
 
@@ -27,7 +39,7 @@ public class MarketPlace {
         ui.displayMessage(listing.getId() + ". " + listing.getClothingItem().getColor() + " " + listing.getClothingItem().getClothingType() + " " + listing.getPrice() + ",- " + listing.getDescription());
     }
 
-    private static void listAvailableClothingItems() {
+    private void listAvailableClothingItems() {
 
         String sql = "SELECT listings.*, users.*, clothes.* " +
                 "FROM listings " +
@@ -64,7 +76,14 @@ public class MarketPlace {
 
     }
 
-    private static void sellListing() {
+    private void sellListing() {
+
+        User user = UserManager.loggedInUser;
+        if(user == null) {
+            ui.displayMessage("You must be logged in to sell anything!");
+            return;
+        }
+
         String color = ui.getInput("What color is the item?");
         String clothingType = ui.getInput("What type of clothing is your item?");
         String description = ui.getInput("Describe your item.");
@@ -93,12 +112,6 @@ public class MarketPlace {
 
         saveClothing(clothing);
 
-        User user = UserManager.loggedInUser;
-        if(user == null) {
-            user = new User("TestUser", "TestPassword","test@email.com");
-            user.setUser_id(5);
-        }
-
         ClothingListing listing = new ClothingListing(0, user, clothing, price, description);
 
         saveListing(listing);
@@ -108,7 +121,7 @@ public class MarketPlace {
 
     }
 
-    private static void saveClothing(Clothing clothing) {
+    private void saveClothing(Clothing clothing) {
         String sql = "INSERT INTO clothes(color, clothingType) VALUES(?, ?)";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
@@ -132,7 +145,7 @@ public class MarketPlace {
         }
     }
 
-    private static void saveListing(ClothingListing listing) {
+    private void saveListing(ClothingListing listing) {
         String sql = "INSERT INTO listings(seller_id, clothing_id, price, description) VALUES(?,?,?,?)";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
@@ -158,7 +171,43 @@ public class MarketPlace {
         }
     }
 
-    private static int displayMenu() {
+
+    private void buyClothingItem(){
+
+        String selectedInput = ui.getInput("Enter the listing ID of the item you want to purchase.");
+        int selected = -1;
+
+        try {
+            selected = Integer.parseInt(selectedInput);
+        } catch (NumberFormatException e) {
+            ui.displayMessage("'" + selectedInput + "' Is not a valid number.");
+            buyClothingItem();
+        }
+
+        String sql = "DELETE FROM listings WHERE listing_id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql))
+        {
+
+            statement.setInt(1, selected);
+
+            int rowsAffected = statement.executeUpdate();
+            if(rowsAffected > 0) {
+                ui.displayMessage("You've purchased the listing.");
+            } else {
+                ui.displayMessage("The listing you're trying to purchase, is either not available or does not exist.");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    private int displayMenu() {
         ui.displayMessage("");
         ui.displayMessage("Welcome to the Market!");
         ui.displayMessage("Please select an option:");
@@ -177,12 +226,11 @@ public class MarketPlace {
         }
     }
 
-    private static void handleUserChoice() {
+    private void handleUserChoice() {
         int choice = displayMenu();
         switch (choice) {
             case 1:
                 listAvailableClothingItems();
-
                 handleUserChoice();
                 break;
             case 2:
@@ -191,17 +239,12 @@ public class MarketPlace {
                 break;
             case 3:
                 sellListing();
-
                 handleUserChoice();
-
                 break;
             case 4:
-
+                ui.displayMessage("Goodbye!");
+                menu.menu();
                 break;
-            case 5:
-
-                break;
-            case 6:
 
             default:
                 System.out.println("Invalid choice. Please try again.");
