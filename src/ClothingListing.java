@@ -1,19 +1,33 @@
-import java.util.List;
-
-public class ClothingListing {
+class ClothingListing {
+    private int id;
     private User seller;
+
+    private String description;
     private Clothing clothingItem;
     private double price;
-    private int id;
 
-    public ClothingListing(User seller, Clothing clothingItem, double price) {
+    public ClothingListing(int id, User seller, Clothing clothingItem, double price, String description) {
+        this.id = id;
         this.seller = seller;
         this.clothingItem = clothingItem;
         this.price = price;
+        this.description = description;
     }
 
-    public User getSeller() {
+    public String getDescription() {
+        return description;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public User getSeller() {
         return seller;
     }
 
@@ -22,28 +36,12 @@ public class ClothingListing {
     }
 
     public double getPrice() {
-
         return price;
-    }
-
-    // Mark the listing as sold
-    public void markAsSold(List<ClothingListing> listings) {
-
-        listings.remove(this);
     }
 
     @Override
     public String toString() {
-        return String.format("Listing: %s - %s - $%.2f", seller.getUsername(), clothingItem.getClothingType(), price);
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-
-        this.id = id;
+        return String.format("Listing ID: %d - Seller: %s - Item: %s - Price: $%.2f - Description: - %s",
+                id, seller.getUsername(), clothingItem.getName(), price, description);
     }
 }

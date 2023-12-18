@@ -3,7 +3,6 @@ import java.util.List;
 
 public class User {
 
-    private static int nextId = 1; // Used to assign unique IDs to users
     private int id;
     private String username;
     private String password;
