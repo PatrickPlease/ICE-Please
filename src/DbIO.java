@@ -1,44 +1,169 @@
-import java.io.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DbIO {
+    TextUI ui = new TextUI();
+    private static final String URL = "jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455";
+    private static final String USER = "sql11669455";
+    private static final String PASSWORD = "dvjB1r36bu";
 
-    static TextUI ui = new TextUI();
-
-    static Connection connection;
-    {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455", "sql11669455", "dvjB1r36bu");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    public void driver() {
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select email, password, user_name, user_id FROM users");
-            while (resultSet.next()) {
-                String email = resultSet.getString("email");
-                String password = resultSet.getString("password");
-                String user_name = resultSet.getString("user_name");
-                String user_id = resultSet.getString("user_id");
 
-                System.out.println(user_id + " | Username:" + user_name + ", Password: " + password + "email: " + email);
+    public void saveOutfit(Connection connection, int user_id, List<Clothing> outfitItems) {
+        String sql = "INSERT INTO outfits (user_id, clothing_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (Clothing clothing : outfitItems) {
+                statement.setInt(1, user_id);
+                statement.setInt(2, clothing.getClothing_id());
+                statement.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static User readUserData(String username) {
+    public void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing> outfitItems) {
+        String sql = "INSERT INTO fave_outfits (user_id, clothing_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (Clothing clothing : outfitItems) {
+                statement.setInt(1, user_id);
+                statement.setInt(2, clothing.getClothing_id());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showClothes(Connection connection, String clothingType) {
+        String sql = "SELECT * FROM clothes WHERE clothingType = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, clothingType);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("clothing_id");
+                    String color = resultSet.getString("color");
+                    String brand = resultSet.getString("brand");
+                    String material = resultSet.getString("material");
+                    String seasons = resultSet.getString("seasons");
+                    String size = resultSet.getString("size");
+                    String info = resultSet.getString("info");
+
+                    ui.displayMessage(id + ". " + color + " " + brand + " " + material + " " + size + " " + seasons + " " + info);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAllClothes(Connection connection) {
+        String sql = "SELECT * FROM clothes";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ui.displayMessage("List of all clothing:");
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("clothing_id");
+                    String color = resultSet.getString("color");
+                    String brand = resultSet.getString("brand");
+                    String type = resultSet.getString("clothingType");
+                    String material = resultSet.getString("material");
+                    String seasons = resultSet.getString("seasons");
+                    String size = resultSet.getString("size");
+                    String info = resultSet.getString("info");
+
+                    switch (type) {
+                        case "Shirt":
+                            String typeOfShirt = resultSet.getString("typeOfShirt");
+                            String sleeveLength = resultSet.getString("sleeveLength");
+                            String neck = resultSet.getString("neck");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShirt + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + sleeveLength + " " + neck + " "+ info + " " );
+                            break;
+                        case "Pants":
+                            String pockets = resultSet.getString("pockets");
+                            String typeOfPants = resultSet.getString("typeOfPants");
+                            ui.displayMessage(id + ". " + type + " " + typeOfPants + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Shorts":
+                            String typeOfShorts = resultSet.getString("typeOfShorts");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShorts + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Dress":
+                            String typeOfDress = resultSet.getString("typeOfDress");
+                            ui.displayMessage(id + ". " + type + " " + typeOfDress + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Shoes":
+                            String typeOfShoes = resultSet.getString("typeOfShoes");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShoes + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Suits":
+                            String typeOfSuit = resultSet.getString("typeOfSuit");
+                            ui.displayMessage(id + ". " + type + " " + typeOfSuit + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported clothing type: " + type);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public Clothing getClothingById(Connection connection, int clothing_id) {
+        String sql = "SELECT * FROM clothes WHERE clothing_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, clothing_id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("clothing_id");
+                    String color = resultSet.getString("color");
+                    String brand = resultSet.getString("brand");
+                    String type = resultSet.getString("clothingType");
+                    String material = resultSet.getString("material");
+                    String seasons = resultSet.getString("seasons");
+                    String size = resultSet.getString("size");
+                    String info = resultSet.getString("info");
+
+                    switch (type) {
+                        case "Shirt":
+                            String typeOfShirt = resultSet.getString("typeOfShirt");
+                            String sleeveLength = resultSet.getString("sleeveLength");
+                            String neck = resultSet.getString("neck");
+                            return new Shirt(id, color, brand, type, seasons, size, material, info, sleeveLength, neck, typeOfShirt);
+                        case "Pants":
+                            String pockets = resultSet.getString("pockets");
+                            String typeOfPants = resultSet.getString("typeOfPants");
+                            return new Pants(id, color, brand, type, seasons, size, material, info, pockets, typeOfPants);
+                        case "Shorts":
+                            String typeOfShorts = resultSet.getString("typeOfShorts");
+                            return new Shorts(id, color, brand, type, seasons, size, material, info, typeOfShorts);
+                        case "Shoes":
+                            String typeOfShoes = resultSet.getString("typeOfShoes");
+                            return new Shoes(id, color, brand, type, seasons, size, material, info, typeOfShoes);
+                        case "Socks":
+                            String typeOfSock = resultSet.getString("typeOfSock");
+                            return new Socks(id, color, brand, type, seasons, size, material, info, typeOfSock);
+                        case "Suits":
+                            String typeOfSuit = resultSet.getString("typeOfSuit");
+                            return new Suits(id, color, brand, type, seasons, size, material, info, typeOfSuit);
+                        default:
+                            throw new IllegalArgumentException("Unsupported clothing type: " + type);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static User readUserData(Connection connection, String username) {
         String query = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setString(1, username);
@@ -46,7 +171,8 @@ public class DbIO {
 
             if (resultSet.next()) {
                 String password = resultSet.getString("password");
-                return new User(resultSet.getString("username"), password);
+                String email = resultSet.getString("email");
+                return new User(resultSet.getString("username"), password, email);
             }
         } catch (SQLException e) {
             System.out.println("File not found: " + e.getMessage());
@@ -54,46 +180,155 @@ public class DbIO {
         return null;
     }
 
-    public static void saveUserData(User user) {
-        try (PrintWriter pWriter = new PrintWriter(new FileWriter("data/UserData/" + user.getUsername() + "_UserData.txt", true))) {
+
+    public static void saveUserData(Connection connection, User user) {
+        String query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
             if (user != null) {
-                pWriter.println(user.getPassword());
+                preparedStatement.setString(1, user.getUsername());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.executeUpdate();
             }
-        } catch (IOException e) {
-            System.out.println("Something is wrong with the Datafile: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error saving user data to the database: " + e.getMessage());
         }
     }
 
-    public static List<String> readUserWatchlist(String username) {
-        try (Scanner scanner = new Scanner(new File("data/UserData/" + username + "_UserData.txt"))) {
-            List<String> watchlist = new ArrayList<>();
-            while (scanner.hasNextLine()) {
-                watchlist.add(scanner.nextLine());
+    public static int getUserId(Connection connection, String username, String password) {
+        String query = "SELECT user_id FROM users WHERE username = ? AND password = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("user_id");
             }
-            return watchlist;
-        } catch (FileNotFoundException e) {
-            System.out.println("Watchlist file not found: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user_id: " + e.getMessage());
         }
-        return null;
+        return -1;  // Return -1 if login fails
     }
 
-    public static void saveUserWatchlist(String username, List<String> watchlist) {
-        try (PrintWriter pWriter = new PrintWriter(new FileWriter("data/UserData/" + username + "_UserData.txt"))) {
-            for (String watchlistItem : watchlist) {
-                pWriter.println(watchlistItem);
-            }
-        } catch (IOException e) {
-            System.out.println("Something is wrong with the Watchlist file: " + e.getMessage());
+    public static void updatePassword(Connection connection, String username, String newPassword) {
+        String query = "UPDATE users SET password = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating password: " + e.getMessage());
         }
     }
 
-    public static void addToWatchlist(User user, String newWatchlistItem) {
-        try (PrintWriter pWriter = new PrintWriter(new FileWriter("data/UserData/" + user.getUsername() + "_UserData.txt", true))) {
-            if (user != null) {
-                pWriter.println(newWatchlistItem);
+    public static void updateEmail(Connection connection, String username, String newEmail) {
+        String query = "UPDATE users SET email = ? WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, newEmail);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating email: " + e.getMessage());
+        }
+    }
+
+
+    public void saveClothingToDatabase(Connection connection, Clothing clothing) {
+        StringBuilder sql = new StringBuilder("INSERT INTO clothes (color, brand, clothingType, seasons, size, material, info");
+        StringBuilder values = new StringBuilder("VALUES (?, ?, ?, ?, ?, ?, ?");
+        int parameterIndex = 7;
+
+        try {
+            if (clothing instanceof Shirt) {
+                sql.append(", sleeveLength, neck, typeOfShirt");
+                values.append(", ?, ?, ?");
+                parameterIndex += 1;
+            } else if (clothing instanceof Pants) {
+                sql.append(", typeOfPants");
+                values.append(", ?");
+                parameterIndex += 1;
+            } else if (clothing instanceof Shoes) {
+                sql.append(", typeOfShoes");
+                values.append(", ?");
+                parameterIndex += 1;
+            } else if (clothing instanceof Shorts) {
+                sql.append(", typeOfShorts");
+                values.append(", ?");
+                parameterIndex += 1;
+            } else if (clothing instanceof Dress) {
+                sql.append(", dressLength, typeOfPants");
+                values.append(", ?, ?");
+                parameterIndex += 2;
+            } else if (clothing instanceof Suits) {
+                sql.append(", typeOfSuit");
+                values.append(", ?");
+                parameterIndex += 1;
             }
-        } catch (IOException e) {
-            System.out.println("Something is wrong with the Watchlist file: " + e.getMessage());
+
+            sql.append(") ").append(values).append(")");
+
+            try (PreparedStatement statement = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS)) {
+                statement.setString(1, clothing.getColor());
+                statement.setString(2, clothing.getBrand());
+                statement.setString(3, clothing.getClothingType());
+                statement.setString(4, clothing.getSeasons());
+                statement.setString(5, clothing.getSize());
+                statement.setString(6, clothing.getMaterial());
+                statement.setString(7, clothing.getInfo());
+
+                if (clothing instanceof Shirt) {
+                    Shirt shirt = (Shirt) clothing;
+                    statement.setString(parameterIndex++, shirt.getSleeveLength());
+                    statement.setString(parameterIndex++, shirt.getNeck());
+                    statement.setString(parameterIndex, shirt.getTypeOfShirt());
+                } else if (clothing instanceof Pants) {
+                    Pants pants = (Pants) clothing;
+                    statement.setString(parameterIndex, pants.getTypeOfPants());
+                } else if (clothing instanceof Shoes) {
+                    Shoes shoes = (Shoes) clothing;
+                    statement.setString(parameterIndex, shoes.getTypeOfShoes());
+                } else if (clothing instanceof Shorts) {
+                    Shorts shorts = (Shorts) clothing;
+                    statement.setString(parameterIndex, shorts.getTypeOfShorts());
+                } else if (clothing instanceof Dress) {
+                    Dress dress = (Dress) clothing;
+                    statement.setString(parameterIndex++, dress.getDressLength());
+                    statement.setString(parameterIndex, dress.getTypeOfDress());
+                } else if (clothing instanceof Suits) {
+                    Suits suits = (Suits) clothing;
+                    statement.setString(parameterIndex, suits.getTypeOfSuit());
+                }
+
+                int affectedRows = statement.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new SQLException("Inserting clothing failed, no rows affected.");
+                }
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int clothingId = generatedKeys.getInt(1);
+                        clothing.setClothing_id(clothingId);
+                    } else {
+                        throw new SQLException("Inserting clothing failed, no ID obtained.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void removeClothingFromDatabase(Connection connection, int clothing_id) throws SQLException {
+        String sql = "DELETE FROM clothes WHERE clothing_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, clothing_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
     }
 }

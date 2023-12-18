@@ -1,4 +1,4 @@
-        @startuml
+@startuml
 'Domænemodellen giver nye entity klasser
 'Pakker, model og util
 !pragma layout smetana
@@ -23,11 +23,12 @@ class CreateUserSettings
 class NotificationSettings
 
 Abstract Clothing
-class Pant
+class Pants
 class Shirt
 class Shoes
 class Socks
-class underwear
+class Underwear
+class Suits
 
 package "util"{
        class TextUI
@@ -43,16 +44,20 @@ MainMenu *-- ErrorHandling
 Wardrobe *-- Category
 
 User *-- DataValidator
+CreateAccount <-- DataValidator
 User *-- CreateAccount
 Settings *-- CreateUserSettings
 Settings *-- NotificationSettings
-Clothing *-- Wardrobe
+Wardrobe *-- Clothing
 Clothing *-- Shoes
 Clothing *-- Shirt
 Clothing *-- Pants
 Clothing *-- Socks
 Clothing *-- Underwear
-Clothing *-- Pan
+Clothing *-- Suits
+
+StartMenu *-- util
+StartMenu *-- User
 
 StartMenu : + login()
 StartMenu : + createUser()
@@ -63,28 +68,36 @@ MainMenu : + Market
 MainMenu : + Settings
 MainMenu : + ErrorHandling
 
+Clothing : + int clothing_id
+Clothing : + int user_id
 Clothing : + String color
 Clothing : + String brand
-Clothing : + String type
-Clothing : + String Seasons
+Clothing : + String clothingType
+Clothing : + String seasons
+Clothing : + String size
+Clothing : + String material
+Clothing : + String info
+Clothing : - Clothing
 
-Shoes : + String type
-Shoes : + float size
+ClothingListing : + Private User seller
+ClothingListing : + Private Clothing clothingItem
+ClothingListing : + Private double price
+ClothingListing : - ClothingListing
+ClothingListing : + markAsSold(List<ClothingListing>listings)
 
-Shirt : + String Sleeves length
+Shoes : + String typeOfShoes
+
+Shirt : + String sleevesLength
 Shirt : + String neck
-Shirt : + String type
+Shirt : + String typeOfShirt
 
-Pants : + String shorts
-Pants : + String Jeans
-Pants : + String size
+Suits : + String typeOfSuit
+
 Pants : + boolean pockets
+Pants : + String typeOfPants
 
-Socks : + String size
 Socks : + String type
 
-Underwear : + String size
-Underwear : + String material
 Underwear : + String type
 
 Market : + sellClothing()
@@ -98,7 +111,7 @@ Market : + savedListing()
 
 Wardrobe : + createOutfit()
 Wardrobe : + generateOutfit()
-Wardrobe : + showPreWornOutfits()
+Wardrobe : + showPrewornOutfits()
 Wardrobe : + addOutfitToFavorite()
 Wardrobe : + addClothingToWardrobe()
 Wardrobe : + removeClothingFromWardrobe()
@@ -119,27 +132,40 @@ Main : + static void main(string [] args)
 User : - String username
 User : - String password
 User : - static ArrayList <User> users
-'---_new-----
-User : + User(String Username, String Password)
-'-----------
 
-'---_new-----
+
+User : + User(String Username, String Password)
+
+
 DataValidator : + Boolean isUsernameValid()
 DataValidator : + Boolean isPassWordValid()
+DataValidator : + Boolean isEmailValid()
 '-----------
 
-CreateAccount : - Boolean createUser(String name, String Password)
-CreateAccount : - Boolean addUser(new user(name, Password)
-CreateAccount : - Boolean removeUser(new user(name, Password)
+CreateAccount : + TextUI
+CreateAccount : + DBIO
+CreateAccount : - void createUser(String name, String Password)
 
-
-DbIO : - Scanner scanner
 
 '---_new-----
+DbIO : + DbIO
+DbIO : + TextUI
+DbIO : + String url
+DbIO : + String user
+DbIO : + String password
 DbIO : + Arraylist<User> readUserData(String path)
 DbIO : + void saveUserData(ArrayList<User> users)
 DbIO : + String[] readLoginData(String Username, String password)
-DbIO : + String[] readMediaData(String title, int releaseYear, float rating, String genre)
+DbIO : + Connection getConnection()
+DbIO : + void saveOutfit(Connection connection, int user_id, List<Clothing>outfitItems)
+DbIO : + void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing>outfitItems)
+DbIO : + void showClothes(Connection connection, String clothingType)
+DbIO : + Clothing getClothingById(Connection connection, int clothing_id)
+DbIO : + static User readUserData(Connection connection, String username)
+DbIO : + static void saveUserData(Connection connection, User user)
+DbIO : + static int getUserId(Connection connection, String username, String password)
+DbIO : + void saveClothingToDatabase(Connection connection, Clothing clothing)
+DbIO : + void removeClothingFromDatabase(Connection connection,
 '-----------
 
 TextUI : + String getInput(String msg)

@@ -1,20 +1,19 @@
 import java.util.Scanner;
 
-public class Shoes extends Clothing {
+public class Shorts extends Clothing {
     TextUI ui = new TextUI();
-    private String typeOfShoes;
+    String typeOfShorts;
 
-    public Shoes(int clothing_id, String color, String brand, String clothingType, String seasons, String size, String material, String info, String typeOfShoes) {
+    public Shorts(int clothing_id, String color, String brand, String clothingType, String seasons, String size, String material, String info, String typeOfShorts) {
         super(clothing_id, color, brand, clothingType, seasons, size, material, info);
-        this.typeOfShoes = typeOfShoes;
+        this.typeOfShorts = typeOfShorts;
+    }
+    public String getTypeOfShorts() {
+        return typeOfShorts;
     }
 
-    public String getTypeOfShoes() {
-        return typeOfShoes;
-    }
-
-    public Shoes createShoes(Scanner scanner) {
-        ui.displayMessage("Enter shoe details:");
+    public Shorts createShorts(Scanner scanner) {
+        ui.displayMessage("Enter shorts details:");
 
         ui.displayMessage("Color:");
         String color = scanner.nextLine();
@@ -34,9 +33,9 @@ public class Shoes extends Clothing {
         ui.displayMessage("Additional Info:");
         String info = scanner.nextLine();
 
-        ui.displayMessage("Type of Shoes:");
-        String typeOfShoes = scanner.nextLine();
+        ui.displayMessage("Type of Shorts:");
+        String typeOfShorts = scanner.nextLine();
 
-        return new Shoes(0, color, brand, "Shoes", seasons, size, material, info, typeOfShoes);
+        return new Shorts(0, color, brand, "Shorts", seasons, size, material, info, typeOfShorts);
     }
 }

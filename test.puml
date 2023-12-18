@@ -1,0 +1,227 @@
+@startuml
+!pragma layout smetana
+class Socks {
+~ String typeOfSock
++ String getTypeOfSock()
+}
+class Underwear {
+~ String typeOfUnderwear
++ String getTypeOfUnderwear()
+}
+class ErrorHandling {
+}
+class TextUI {
+- Scanner scan
++ String getInput(String)
++ void displayMessage(String)
+}
+class DataValidator {
++ {static} boolean isUsernameValid(String)
++ {static} boolean isPasswordValid(String)
++ {static} boolean isEmailValid(String)
+}
+class Main {
++ {static} void main(String[])
+}
+class CreateAccount {
+- {static} TextUI ui
+- {static} DbIO io
++ {static} void createUser()
++ {static} void getInfoFromUser()
+}
+class User {
+- String username
+- String password
+- String email
+- int user_id
+~ {static} ArrayList<User> users
+- List<Clothing> clothingItems
++ int getUser_id()
++ void setUser_id(int)
++ String getUsername()
++ void setUsername(String)
++ String getPassword()
++ void setPassword(String)
++ String getEmail()
++ {static} ArrayList<User> getUsers()
++ List<Clothing> getClothingItems()
++ {static} void addUser(User)
++ String toString()
+}
+abstract class Settings {
++ {static} void createUserSettings()
++ {static} void notificationSettings()
++ {static} void logOut()
++ {static} void EULA()
+}
+class Pants {
+~ TextUI ui
+~ String typeOfPants
+~ String pockets
++ String getTypeOfPants()
++ String getPockets()
++ Pants createPants(Scanner)
+}
+class StartMenu {
++ void login()
++ void createUser()
+}
+class Market {
+- {static} List<Clothing> clothingListings
+- {static} List<ClothingListing> listings
++ {static} void sellClothing(User,Clothing,double)
++ {static} void viewListings()
++ {static} void buyListing(User,ClothingListing)
+- {static} void addListing(ClothingListing)
++ {static} void donateClothing(User,Clothing)
++ {static} void borrowClothing(User,Clothing)
++ {static} void addToBuyHistory(User,Clothing)
++ {static} void addToSellHistory(User,Clothing)
++ {static} void chatWindow(User,User)
++ {static} void savedListing(User,Clothing)
+}
+class Dress {
+~ TextUI ui
+~ String typeOfDress
+~ String dressLength
++ String getTypeOfDress()
++ String getDressLength()
++ Dress createDress(Scanner)
+}
+class Laundry {
+- Connection connection
+- ArrayList<String> dirtyClothes
+~ TextUI ui
+~ String url
+~ String username
+~ String password
+- void readDirtyClothesFromDatabase()
++ void viewAllClothes()
++ void viewClothesInBasket()
+- String getColor(String)
+- int getCleanliness(String)
++ void closeConnection()
+}
+class MainMenu {
+- {static} User loggedInUser
+- {static} TextUI ui
+- {static} DbIO io
++ void setup()
++ void menu()
++ void settingsMenu()
++ User login()
+}
+class Shoes {
+~ TextUI ui
+- String typeOfShoes
++ String getTypeOfShoes()
++ Shoes createShoes(Scanner)
+}
+class NotificationSettings {
+}
+class ClothingListing {
+- User seller
+- Clothing clothingItem
+- double price
++ User getSeller()
++ Clothing getClothingItem()
++ double getPrice()
++ void markAsSold(List<ClothingListing>)
++ String toString()
+}
+class Shorts {
+~ TextUI ui
+~ String typeOfShorts
++ String getTypeOfShorts()
++ Shorts createShorts(Scanner)
+}
+class DbIO {
+~ TextUI ui
+- {static} String URL
+- {static} String USER
+- {static} String PASSWORD
++ {static} Connection getConnection()
++ void saveOutfit(Connection,int,List<Clothing>)
++ void saveOutfitToFavorite(Connection,int,List<Clothing>)
++ void showClothes(Connection,String)
++ Clothing getClothingById(Connection,int)
++ {static} User readUserData(Connection,String)
++ {static} void saveUserData(Connection,User)
++ {static} int getUserId(Connection,String,String)
++ void saveClothingToDatabase(Connection,Clothing)
++ void removeClothingFromDatabase(Connection,int)
+}
+class Suits {
+~ TextUI ui
+~ String typeOfSuit
++ String getTypeOfSuit()
++ Suits createSuit(Scanner)
+}
+class Shirt {
+~ TextUI ui
+~ String sleeveLength
+~ String neck
+~ String typeOfShirt
++ String getSleeveLength()
++ String getNeck()
++ String getTypeOfShirt()
++ Shirt createShirt(Scanner)
+}
+class Wardrobe {
+~ Shirt shirt
+~ Pants pants
+~ Dress dress
+~ Shoes shoes
+~ Suits suits
+~ Shorts shorts
+~ TextUI ui
+~ DbIO io
+- int user_id
++ Outfit createOutfit()
+- void outfitOptions(Scanner,Connection,List<Clothing>)
++ void generateOutfit()
++ void showPrewornOutfits()
++ void addClothingToWardrobe(Connection)
++ void removeClothingFromWardrobe(Connection)
++ void addClothingToLaundry()
+}
+class CreateUserSettings {
+}
+abstract class Clothing {
+- int clothing_id
+- String color
+- String brand
+- String clothingType
+- String seasons
+- String size
+- String material
+- String info
+- int user_id
++ String getColor()
++ String getBrand()
++ String getClothingType()
++ String getSeasons()
++ String getSize()
++ String getMaterial()
++ String getInfo()
++ int getClothing_id()
++ void setClothing_id(int)
++ void setUser_id(int)
+}
+class Outfit {
+- List<Clothing> outfitItems
++ List<Clothing> getItems()
+}
+
+
+Clothing <|-- Socks
+Clothing <|-- Underwear
+Clothing <|-- Pants
+Clothing <|-- Dress
+Clothing <|-- Shoes
+Settings <|-- NotificationSettings
+Clothing <|-- Shorts
+Clothing <|-- Suits
+Clothing <|-- Shirt
+Settings <|-- CreateUserSettings
+@enduml

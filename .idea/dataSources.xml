@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ctrl_dk_iceplease@ctrl.dk.mysql" uuid="538947d4-a09a-4de6-bedb-2870a89009e4">
-      <driver-ref>mariadb</driver-ref>
+    <data-source source="LOCAL" name="sql11669455@sql11.freesqldatabase.com" uuid="8db5d780-239e-42a0-92f0-20e54bd59915">
+      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://ctrl.dk.mysql:3306/ctrl_dk_iceplease</jdbc-url>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sql11.freesqldatabase.com:3306/sql11669455</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="sql11669455@sql11.freesqldatabase.com" uuid="7dfde2de-3e81-47b2-b1dd-65f29b065dd3">
+    <data-source source="LOCAL" name="sql11669455@sql11.freesqldatabase.com [2]" uuid="e44f5ed0-5afb-433a-9a3f-32427c39cac6">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
