@@ -46,6 +46,9 @@ public class MarketPlace {
                     case "shirt":
                         clothingItem = new Shirt(resultSet.getInt("clothing_id"), resultSet.getString("color"), resultSet.getString("brand"), resultSet.getString("clothingType"), resultSet.getString("seasons"), resultSet.getString("size"), resultSet.getString("material"), resultSet.getString("info"), resultSet.getString("sleeveLength"), resultSet.getString("neck"), resultSet.getString("typeOfShirt"));
                         break;
+                    case "pants":
+                        clothingItem = new Pants(resultSet.getInt("clothing_id"), resultSet.getString("color"), resultSet.getString("brand"), resultSet.getString("clothingType"), resultSet.getString("seasons"), resultSet.getString("size"), resultSet.getString("material"), resultSet.getString("info"), resultSet.getString("pockets"), resultSet.getString("typeOfPants"));
+                        break;
                     default:
                         throw new RuntimeException("Invalid clothing item! " + resultSet.getString("clothingType"));
                 }
@@ -80,6 +83,9 @@ public class MarketPlace {
         switch(clothingType.toLowerCase()) {
             case "shirt":
                 clothing = new Shirt(0, color, "", "Shirt", "", "", "", "", "", "", "");
+                break;
+            case "pants":
+                clothing = new Pants(0,color , "", "Pants","" ,"" ,"" , "", "", "");
                 break;
             default:
                 throw new RuntimeException("Invalid clothing item! " + clothingType);
@@ -180,7 +186,8 @@ public class MarketPlace {
                 handleUserChoice();
                 break;
             case 2:
-
+                buyClothingItem();
+                handleUserChoice();
                 break;
             case 3:
                 sellListing();
