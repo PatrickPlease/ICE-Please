@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Wardrobe {
-    private User currentUser;
     Shirt shirt;
     Pants pants;
     Dress dress;
@@ -167,8 +166,6 @@ public class Wardrobe {
 
         newClothing.setUser_id(user_id);
 
-        //currentUser.getClothingItems().add(newClothing);
-
         ui.displayMessage("Clothing added to wardrobe.");
 
         io.saveClothingToDatabase(connection, newClothing);
@@ -190,9 +187,7 @@ public class Wardrobe {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
     public void addClothingToLaundry(){
-
     }
 }
