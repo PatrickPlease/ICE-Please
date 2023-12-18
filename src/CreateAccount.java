@@ -29,7 +29,7 @@ public class CreateAccount {
         while (!DataValidator.isEmailValid(email)) {
             email = ui.getInput("Email invalid, please try again");
         }
-        User newUser = null;
+        newUser = null;
         try {
             Connection dbConnection = DbIO.getConnection();
 
@@ -76,7 +76,7 @@ public class CreateAccount {
     private static List<Underwear> initializeUnderwearList(int totalUnderwear) {
         List<Underwear> underwearList = new ArrayList<>();
         for (int i = 0; i < totalUnderwear; i++) {
-            underwearList.add(new Underwear());
+            underwearList.add(new Underwear(0,"","","Underwear","","","","",""));
         }
         return underwearList;
     }

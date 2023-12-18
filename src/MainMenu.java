@@ -5,6 +5,7 @@ public class MainMenu {
     public static User loggedInUser;
     private static TextUI ui = new TextUI();
     private static DbIO io = new DbIO();
+    public static CreateAccount ca = new CreateAccount();
 
     public User setup() {
 
@@ -15,7 +16,7 @@ public class MainMenu {
                 loggedInUser = login();
                 break;
             case 2:
-                loggedInUser = CreateAccount.createUser();
+                loggedInUser = ca.createUser();
                 break;
             default:
                 ui.displayMessage("Invalid choice. Please try again.");
