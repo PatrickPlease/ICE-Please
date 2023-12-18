@@ -25,6 +25,19 @@ public class DbIO {
         }
     }
 
+    public void saveOutfitToFavorite(Connection connection, int user_id, List<Clothing> outfitItems) {
+        String sql = "INSERT INTO fave_outfits (user_id, clothing_id) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            for (Clothing clothing : outfitItems) {
+                statement.setInt(1, user_id);
+                statement.setInt(2, clothing.getClothing_id());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void showClothes(Connection connection, String clothingType) {
         String sql = "SELECT * FROM clothes WHERE clothingType = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -39,13 +52,68 @@ public class DbIO {
                     String size = resultSet.getString("size");
                     String info = resultSet.getString("info");
 
-                    ui.displayMessage(id + ". " + color + " " + brand+ " " + material + " " + size + " " + seasons + " " + info);
+                    ui.displayMessage(id + ". " + color + " " + brand + " " + material + " " + size + " " + seasons + " " + info);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public void showAllClothes(Connection connection) {
+        String sql = "SELECT * FROM clothes";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ui.displayMessage("List of all clothing:");
+
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("clothing_id");
+                    String color = resultSet.getString("color");
+                    String brand = resultSet.getString("brand");
+                    String type = resultSet.getString("clothingType");
+                    String material = resultSet.getString("material");
+                    String seasons = resultSet.getString("seasons");
+                    String size = resultSet.getString("size");
+                    String info = resultSet.getString("info");
+
+                    switch (type) {
+                        case "Shirt":
+                            String typeOfShirt = resultSet.getString("typeOfShirt");
+                            String sleeveLength = resultSet.getString("sleeveLength");
+                            String neck = resultSet.getString("neck");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShirt + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + sleeveLength + " " + neck + " "+ info + " " );
+                            break;
+                        case "Pants":
+                            String pockets = resultSet.getString("pockets");
+                            String typeOfPants = resultSet.getString("typeOfPants");
+                            ui.displayMessage(id + ". " + type + " " + typeOfPants + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Shorts":
+                            String typeOfShorts = resultSet.getString("typeOfShorts");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShorts + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Dress":
+                            String typeOfDress = resultSet.getString("typeOfDress");
+                            ui.displayMessage(id + ". " + type + " " + typeOfDress + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Shoes":
+                            String typeOfShoes = resultSet.getString("typeOfShoes");
+                            ui.displayMessage(id + ". " + type + " " + typeOfShoes + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        case "Suits":
+                            String typeOfSuit = resultSet.getString("typeOfSuit");
+                            ui.displayMessage(id + ". " + type + " " + typeOfSuit + " " + color + " "+ brand + " "+ size + " "+ material + " " + seasons + " " + info + " " );
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported clothing type: " + type);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Clothing getClothingById(Connection connection, int clothing_id) {
         String sql = "SELECT * FROM clothes WHERE clothing_id = ?";
@@ -250,6 +318,17 @@ public class DbIO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void removeClothingFromDatabase(Connection connection, int clothing_id) throws SQLException {
+        String sql = "DELETE FROM clothes WHERE clothing_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, clothing_id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
     }
 }
